@@ -1,0 +1,70 @@
+{
+  "dossier_id": "dossier_001",
+  "partijen": {
+    "verkopers": [
+      {
+        "titel_adres": "De heer",
+        "naam": "Vermeersch",
+        "voornaam": "Koen",
+        "adres": "Dennenlaan 8, 2220 Heist-op-den-Berg",
+        "geboorteplaats": "Lier",
+        "geboortedatum": "1971-04-18",
+        "rijksregisternummer": "71.04.18-247.61",
+        "burgerlijke_staat": "gehuwd"
+      },
+      {
+        "titel_adres": "Mevrouw",
+        "naam": "Claessens",
+        "voornaam": "Hilde",
+        "adres": "Dennenlaan 8, 2220 Heist-op-den-Berg",
+        "geboorteplaats": "Mechelen",
+        "geboortedatum": "1974-09-03",
+        "rijksregisternummer": "74.09.03-168.34",
+        "burgerlijke_staat": "gehuwd"
+      }
+    ],
+    "kopers": [
+      {
+        "titel_adres": "De heer",
+        "naam": "Peeters",
+        "voornaam": "Thomas",
+        "adres": "Stationsstraat 52, 2200 Herentals",
+        "geboorteplaats": "Turnhout",
+        "geboortedatum": "1992-11-27",
+        "burgerlijke_staat": "wettelijk samenwonend"
+      },
+      {
+        "titel_adres": "Mevrouw",
+        "naam": "Van Dijk",
+        "voornaam": "Sara",
+        "adres": "Stationsstraat 52, 2200 Herentals",
+        "geboorteplaats": "Geel",
+        "geboortedatum": "1993-06-14",
+        "burgerlijke_staat": "wettelijk samenwonend"
+      }
+    ]
+  },
+  "pand": {
+    "pandtype": "woning",
+    "adres": "Berkenlaan 14, 2220 Heist-op-den-Berg",
+    "kadaster": "1e afdeling, sectie C, nummer 312K, oppervlakte 620 m²",
+    "ki": 1485,
+    "bouwjaar": 1987
+  },
+  "transactie": {
+    "verkoopsprijs": 349000,
+    "waarborg": 34900,
+    "akte_uiterlijk": "2026-06-09",
+    "genot": "vrij"
+  },
+  "attesten": {
+    "bodem": "ok",
+    "stedenbouw": "ok",
+    "epc_label": "D",
+    "asbest": "verplicht_ok",
+    "elektriciteit": "niet_conform"
+  },
+  "financiering_status": "lopend",
+  "fiscaliteit": "registratie",
+  "mede_eigendom": false
+}
