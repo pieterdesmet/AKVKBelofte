@@ -1,0 +1,99 @@
+{
+  "dossier_id": "dossier_001",
+  "validated_against": "clauses_v0.1.json",
+  "missing_fields": [
+    {
+      "field": "notaris_verkoper",
+      "severity": "required",
+      "referenced_by": "MODAL_03",
+      "reason": "Parametrisch veld {{notaris_verkoper}} kan niet ingevuld worden"
+    },
+    {
+      "field": "notaris_koper",
+      "severity": "recommended",
+      "referenced_by": "MODAL_03",
+      "reason": "Parametrisch veld {{notaris_koper}} kan niet ingevuld worden"
+    },
+    {
+      "field": "datum_ondertekening",
+      "severity": "required",
+      "referenced_by": "HOOFD_01, HOOFD_02, OPTIES_01",
+      "reason": "Vereist voor berekening call-optie termijn (4 maanden) en put-optie termijn"
+    },
+    {
+      "field": "bodemattest.datum",
+      "severity": "required",
+      "referenced_by": "VERKL_BODEM_01",
+      "reason": "Parametrisch veld {{datum_bodemattest}} kan niet ingevuld worden; attesten.bodem=ok maar attest-details ontbreken"
+    },
+    {
+      "field": "bodemattest.referentie",
+      "severity": "required",
+      "referenced_by": "VERKL_BODEM_01",
+      "reason": "Parametrisch veld {{referentie_bodemattest}} kan niet ingevuld worden"
+    },
+    {
+      "field": "bodemattest.inhoud",
+      "severity": "required",
+      "referenced_by": "VERKL_BODEM_01",
+      "reason": "Parametrisch veld {{inhoud_bodemattest}} kan niet ingevuld worden"
+    },
+    {
+      "field": "verklaarde_opties.bodem_verklaring",
+      "severity": "required",
+      "referenced_by": "VERKL_BODEM_01",
+      "reason": "Keuze tussen option_1 (geen risicogrond), option_2 (wel risicogrond), option_3 (geen activiteit) ontbreekt; nodig voor {{bodem_verklaring}}"
+    },
+    {
+      "field": "verklaarde_opties.asbest_optie",
+      "severity": "recommended",
+      "referenced_by": "VERKL_ASBEST_01",
+      "reason": "Keuze tussen option_1 (geen vermoeden) en option_2 (koper verzaakt) ontbreekt; attest is ok maar expliciete clausekeuze nodig voor {{asbest_optie}}"
+    }
+  ],
+  "warnings": [
+    {
+      "field": "attesten.elektriciteit",
+      "value": "niet_conform",
+      "clause": "VERKL_ELEC_01",
+      "impact": "high",
+      "detail": "Elektrische installatie niet conform. Conform clause VERKL_ELEC_01 moet verkoper laten herstellen of akkoord krijgen om prijs te verminderen. Dit moet expliciet geregeld worden vóór akte."
+    },
+    {
+      "field": "financiering_status",
+      "value": "lopend",
+      "clause": "OPSCH_FIN_01",
+      "impact": "high",
+      "detail": "Financiering nog niet bevestigd. Opschortende voorwaarde OPSCH_FIN_01 wordt geactiveerd. Verzakingstermijn 14 kalenderdagen na dagtekening overeenkomst. Bewijs via twee attesten Belgische financiële instellingen vereist bij weigering."
+    },
+    {
+      "field": "pand.bouwjaar",
+      "value": 1987,
+      "clause": "VERKL_ASBEST_01",
+      "impact": "medium",
+      "detail": "Bouwjaar 1987 < 2001: asbestclausule VERKL_ASBEST_01 is verplicht actief. Attest is ok (verplicht_ok), maar expliciete optiekeuze voor clausetekst ontbreekt."
+    },
+    {
+      "field": "transactie.waarborg",
+      "value": 34900,
+      "clause": "OPTIES_01",
+      "impact": "info",
+      "detail": "Waarborg bedraagt exact 10% van verkoopprijs (349000). Standaard conform marktpraktijk."
+    },
+    {
+      "field": "partijen.kopers[*].rijksregisternummer",
+      "value": null,
+      "clause": "PARTIJEN_02",
+      "impact": "info",
+      "detail": "Rijksregisternummer kopers niet opgenomen in dossier. Niet vereist door kopersclausule PARTIJEN_02, wel aangeraden voor eenduidige identificatie bij notaris."
+    }
+  ],
+  "dossier_readiness_score": 68,
+  "readiness_decision": "generate_with_flags",
+  "decision_reasoning": {
+    "blocking_missing": 5,
+    "recommended_missing": 2,
+    "active_warnings": 2,
+    "summary": "Kerngegevens partijen, pand en transactie zijn volledig. Generatie mogelijk maar 5 verplichte velden ontbreken (notaris verkoper, datum ondertekening, bodemattest details, bodemverklaring keuze). Elektriciteit niet-conform en financiering lopend vereisen aandacht. Geen jurist vereist voor dit standaard residentieel dossier."
+  }
+}
