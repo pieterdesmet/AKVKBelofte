@@ -1,0 +1,83 @@
+{
+  "verkopers": [
+    {
+      "titel_adres": "De heer",
+      "naam": "Janssens",
+      "voornaam": "Marc",
+      "adres": {
+        "straat": "Kerkstraat",
+        "huisnummer": "15",
+        "bus": null,
+        "postcode": "2200",
+        "gemeente": "Herentals"
+      },
+      "geboorteplaats": "Herentals",
+      "geboortedatum": "1965-03-12",
+      "rijksregisternummer": "65.03.12-123.45",
+      "burgerlijke_staat": "gehuwd"
+    }
+  ],
+  "kopers": [
+    {
+      "titel_adres": "Mevrouw",
+      "naam": "De Smedt",
+      "voornaam": "Anja",
+      "adres": {
+        "straat": "Lierseweg",
+        "huisnummer": "42",
+        "bus": null,
+        "postcode": "2200",
+        "gemeente": "Herentals"
+      },
+      "geboorteplaats": "Lier",
+      "geboortedatum": "1988-07-22",
+      "rijksregisternummer": null,
+      "burgerlijke_staat": "ongehuwd"
+    }
+  ],
+  "eigendom": {
+    "type_pand": "woning",
+    "gemeente": "Herentals",
+    "straat": "Bovenrij",
+    "huisnummer": "7",
+    "postcode": "2200",
+    "kadaster": {
+      "afdeling": "1",
+      "sectie": "B",
+      "nummer": "234A",
+      "oppervlakte": "450"
+    },
+    "kadastraal_inkomen": "1250"
+  },
+  "notaris_verkoper": {
+    "kantoor": "Notariskantoor Peeters",
+    "adres": {
+      "straat": "Markt",
+      "huisnummer": "5",
+      "postcode": "2200",
+      "gemeente": "Herentals"
+    },
+    "telefoon": "014 21 12 34",
+    "email": "info@notaris-peeters.be"
+  },
+  "notaris_koper": null,
+  "verkoopprijs": 325000.00,
+  "voorschot": 32500.00,
+  "bodemattest": {
+    "datum": "2026-01-15",
+    "referentie": "OVAM-2026-12345",
+    "inhoud": "Geen verontreiniging vastgesteld"
+  },
+  "verklaarde_opties": {
+    "bodem_optie": "option_1",
+    "bodem_verklaring": "option_1",
+    "asbest_optie": "option_1",
+    "bosdecreet": "niet_van_toepassing",
+    "onroerend_erfgoed": false,
+    "tienjarige_verzekering_werken": false,
+    "financiering_vereist": true,
+    "rechterlijke_machtiging_vereist": false
+  },
+  "datum_ondertekening": "2026-02-09",
+  "bijzondere_voorwaarden": null
+}

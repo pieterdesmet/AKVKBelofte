@@ -1,0 +1,691 @@
+{
+  "version": "0.1",
+  "document_type": "tweezijdige_aankoopbelofte",
+  "document_title": "Overeenkomst van Tijdelijke Wederzijdse Verkoop/Aankoopbelofte",
+  "metadata": {
+    "issuing_organization": "Confederatie van Immobilienberoepen Vlaanderen (CIB Vlaanderen vzw)",
+    "prepared_by": "Vlaams Studie- en Kenniscentrum Vastgoed en Wonen vzw",
+    "effective_date": "2022-01-01",
+    "jurisdiction": "Belgium - Flanders",
+    "replaces_previous_versions": true,
+    "usage_restriction": "Strict personal use by license holder and signing parties only"
+  },
+  "parties": {
+    "real_estate_broker": {
+      "role": "Bemiddelend vastgoedmakelaar",
+      "template_fields": {
+        "company_name": "Heylen Vastgoed BV",
+        "representatives": [
+          {
+            "name": "Johan Heylen",
+            "biv_number": "502 895"
+          },
+          {
+            "name": "Cedric Vanhencxthoven",
+            "biv_number": "508.756"
+          }
+        ],
+        "address": {
+          "street": "Grote markt 10",
+          "postal_code": "B-2200",
+          "city": "Herentals"
+        },
+        "insurance": "BA en Borgstelling via NV AXA Belgium (polisnr. 730.390.160)",
+        "warranty_organization": "KBC Verzekeringen"
+      }
+    },
+    "seller": {
+      "role": "Kandidaat-verkoper",
+      "description": "Verkoper(s) van het onroerend goed",
+      "max_count": 4,
+      "required_info": [
+        "titel_adres",
+        "naam",
+        "voornaam",
+        "woonadres_volledig",
+        "geboorteplaats",
+        "geboortedatum",
+        "rijksregisternummer",
+        "burgerlijke_staat"
+      ],
+      "joint_liability": "Hoofdelijk en ondeelbaar verbonden indien meerdere personen",
+      "authority_declaration": "Verklaren de (enige) eigenaars te zijn en bevoegd en bekwaam om te verkopen"
+    },
+    "buyer": {
+      "role": "Kandidaat-koper",
+      "description": "Koper(s) van het onroerend goed",
+      "max_count": 4,
+      "required_info": [
+        "titel_adres",
+        "naam",
+        "voornaam",
+        "woonadres_volledig",
+        "geboorteplaats",
+        "geboortedatum",
+        "burgerlijke_staat"
+      ],
+      "joint_liability": "Hoofdelijk en ondeelbaar verbonden indien meerdere personen",
+      "authority_declaration": "Verklaren bevoegd en bekwaam te zijn om aan te kopen"
+    }
+  },
+  "property_description": {
+    "id": "PROPERTY",
+    "required_fields": {
+      "type_pand": "Type onroerend goed (bv. woning, appartement)",
+      "gemeente": "Gemeente waar gelegen",
+      "straat": "Straatnaam",
+      "huisnummer": "Huisnummer",
+      "kadaster": {
+        "afdeling": "Kadastrale afdeling",
+        "sectie": "Sectie",
+        "nummer": "Perceelnummer",
+        "oppervlakte": "Oppervlakte in m²"
+      },
+      "kadastraal_inkomen": "Niet-geïndexeerd KI"
+    },
+    "standard_clauses": {
+      "disclaimer_kadaster": "De kadastrale gegevens dienen slechts als eenvoudige inlichtingen en de kandidaat-koper kan zich niet beroepen op enige onjuistheid of vergetelheid in deze aanduidingen.",
+      "ki_declaration": "De kandidaat-verkoper verklaart dat het kadastraal inkomen niet onderworpen is aan een herziening en dat er geen procedures hieromtrent lopende zijn.",
+      "inspection_declaration": "De kandidaat-koper verklaart deze eigendom zelf te hebben bezichtigd en de staat, ligging en bestemming ervan goed te kennen.",
+      "description_waiver": "De kandidaat-koper ontslaat de kandidaat-verkoper ervan om een verdere omschrijving van het goed te geven in deze overeenkomst."
+    }
+  },
+  "main_agreement_clauses": {
+    "section": "A. Hoofdinhoud van de overeenkomst",
+    "clauses": {
+      "1_verkoop_belofte_call_option": {
+        "id": "CLAUSE_A1",
+        "title": "Verkoopbelofte van de kandidaat-verkoper (call-optie)",
+        "description": "De kandidaat-verkoper verbindt zich om gedurende een termijn het onroerend goed enkel aan de kandidaat-koper TE VERKOPEN",
+        "key_terms": {
+          "duration": "Vier maanden na ondertekening",
+          "exclusivity": "Enkel aan de kandidaat-koper",
+          "buyer_right": "Kandidaat-koper heeft het recht om te kopen",
+          "conditions": "Tegen de bepaalde voorwaarden"
+        },
+        "extension_clause": "Termijn kan in onderling akkoord verlengd worden, enkel bewijs door geschrift ondertekend door beide partijen"
+      },
+      "2_aankoop_belofte_put_option": {
+        "id": "CLAUSE_A2",
+        "title": "Aankoopbelofte van de kandidaat-koper (put-optie)",
+        "description": "Voor het geval de call-optie niet (tijdig) wordt gelicht, verbindt de kandidaat-koper zich om het goed AAN TE KOPEN",
+        "key_terms": {
+          "trigger": "Als call-optie niet tijdig gelicht wordt",
+          "duration": "Eén maand na verstrijken call-optie termijn",
+          "seller_right": "Kandidaat-verkoper kan verkoop afdwingen",
+          "interest_penalty": "7% per jaar op saldo koopprijs gedurende put-optie termijn"
+        }
+      },
+      "3_notarial_deed_requirement": {
+        "id": "CLAUSE_A3",
+        "title": "Verkoop komt pas tot stand door notariële akte",
+        "description": "De verkoop komt pas tot stand door het verlijden van de notariële akte (plechtig contract)",
+        "key_principles": {
+          "deviation_from_common_law": "In afwijking van het gemeen recht",
+          "moment_of_sale": "Op het ogenblik van het verlijden van de notariële akte",
+          "notary_responsibility": "Notaris bevestigt onder professionele aansprakelijkheid dat er juridisch geen bezwaren bestaan",
+          "before_deed": "Zolang de notariële akte niet werd verleden, bestaat er nog geen verkoop maar enkel een verbintenis",
+          "exception": "Tenzij dwingende overheidsbepalingen zich verzetten (zoals voorkooprecht pachter of harmonisatiedecreet)"
+        }
+      }
+    }
+  },
+  "modality_clauses": {
+    "section": "B. Modaliteiten van de OVEREENKOMST",
+    "clauses": {
+      "1_option_exercise": {
+        "id": "CLAUSE_B1",
+        "title": "Uitoefening van de optie",
+        "description": "Procedure voor het lichten van de optie",
+        "procedure": {
+          "method": "Schriftelijke uitnodiging via notaris",
+          "content": "Uitnodiging tot ondertekening notariële akte op plaats, dag en uur bepaald in samenspraak met notaris",
+          "effect": "Door deze uitnodiging licht de partij de optie",
+          "obligation": "Verplichting de akte te verlijden vóór verstrijken termijn",
+          "pre_emption_right": "Bij voorkooprecht geeft de instrumenterende notaris uitdrukkelijk opdracht dit aan te bieden zonder overleg met partijen"
+        }
+      },
+      "2_timing_requirement": {
+        "id": "CLAUSE_B2",
+        "title": "Timing vereiste: attesten eerst",
+        "description": "Opties kunnen pas gelicht worden na ontvangst bodemattest en stedenbouwkundige inlichtingen",
+        "reference": "Hof van Beroep Antwerpen 14 oktober 2013",
+        "requirement": "Kandidaat-koper moet bodemattest en stedenbouwkundig uittreksel/inlichtingen hebben ontvangen vooraleer optie te lichten"
+      },
+      "3_substitution_right": {
+        "id": "CLAUSE_B3",
+        "title": "Recht van substitutie",
+        "description": "Kandidaat-koper mag een ander persoon in zijn plaats stellen",
+        "conditions": {
+          "scope": "Voor geheel of een deel van zijn rechten en verplichtingen",
+          "restriction_property": "Verkoop moet steeds betrekking hebben op geheel het eigendom",
+          "joint_liability": "Kandidaat-koper blijft steeds hoofdelijk en ondeelbaar gehouden",
+          "notification_deadline": "Identiteit nieuwe kopers uiterlijk 30 dagen vóór akte aan notaris meedelen",
+          "surviving_spouse": "Langstlevende kandidaat-koper mag optie alléén lichten mits volledig nakomen verplichtingen"
+        }
+      },
+      "4_notary_designation": {
+        "id": "CLAUSE_B4",
+        "title": "Aanduiding notaris(sen)",
+        "description": "Elke partij heeft recht een notaris aan te duiden",
+        "principles": {
+          "right_to_notary": "Partijen hebben steeds recht een notaris aan te duiden",
+          "no_cost_increase": "Optreden meerdere notarissen geeft geen aanleiding tot verhoging van de kosten"
+        },
+        "template_fields": {
+          "seller_notary": "Notaris kandidaat-verkoper met contactgegevens",
+          "buyer_notary": "Notaris kandidaat-koper met contactgegevens"
+        }
+      }
+    }
+  },
+  "option_price_warranty": {
+    "section": "C. Optieprijs - Waarborg - Voorschot",
+    "clauses": {
+      "option_price": {
+        "id": "CLAUSE_C1",
+        "title": "Optieprijs",
+        "description": "Kandidaat-koper is optieprijs verschuldigd als tegenprestatie voor verkoopbelofte (call-optie) naast de verleende aankoopbelofte (put-optie)",
+        "amount_field": "voorschot",
+        "payment_details": {
+          "method": "Overschrijving",
+          "recipient": "Heylen Vastgoed BV KBC BE21 7330 3886 5203",
+          "deadline": "Binnen 5 werkdagen na ondertekening",
+          "reference_format": "Straatnaam Huisnummer - Postcode Gemeente",
+          "consignment": "Ter consignatie tot verlijden notariële akte"
+        }
+      },
+      "triple_function": {
+        "id": "CLAUSE_C2",
+        "title": "Drievoudige functie",
+        "functions": {
+          "warranty": "Waarborg voor uitvoering verbintenissen kandidaat-koper",
+          "advance": "Voorschot op koopprijs (aangerekend bij verlijden akte)",
+          "option_price": "Optieprijs (definitief verworven door verkoper onder voorwaarden)"
+        }
+      },
+      "allocation_rules": {
+        "id": "CLAUSE_C3",
+        "title": "Toewijzingsregels",
+        "scenarios": {
+          "call_option_not_exercised_put_not_exercised": {
+            "condition": "Call-optie termijn verstrijkt zonder lichting EN verkoper licht put-optie niet",
+            "allocation": "Bedrag komt toe aan kandidaat-verkoper als definitief verworven optieprijs",
+            "exception": "Behoudens wat bepaald onder punt 4 (opschortende voorwaarden)"
+          },
+          "suspensive_conditions_not_realized": {
+            "condition": "Opschortende voorwaarden realiseren zich niet tijdig",
+            "allocation": "Bedrag wordt teruggegeven aan kandidaat-koper"
+          }
+        }
+      },
+      "interest_handling": {
+        "id": "CLAUSE_C4",
+        "title": "Interesten",
+        "rule": "Interesten komen toe aan de partij aan wie bedrag uiteindelijk wordt uitbetaald",
+        "special_case": "Bij uitbetaling aan verkoper vervangen deze interesten de nalatigheidsinteresten op dit bedrag"
+      },
+      "late_payment_sanction": {
+        "id": "CLAUSE_C5",
+        "title": "Sanctie bij niet-tijdige betaling",
+        "consequences": [
+          "Verkoper kan zich beroepen op uitdrukkelijk ontbindend beding",
+          "Aanspraak op conventioneel voorziene schadevergoeding",
+          "Conventioneel voorziene nalatigheidsinteresten bij laattijdige betaling"
+        ]
+      }
+    }
+  },
+  "suspensive_conditions": {
+    "section": "D. Opschortende voorwaarden",
+    "description": "Voorwaarden waaraan voldaan moet zijn vóór verstrijken termijn aankoopoptie",
+    "general_principle": {
+      "timing": "Moeten gerealiseerd zijn vóór verstrijken termijn aankoopoptie",
+      "failure_consequence": "Bij niet-tijdige realisatie zijn partijen elkaar niets verschuldigd (behoudens specifiek andersluidend beding)",
+      "beneficiary_rights": "Enkel de partij in wiens voordeel de voorwaarde werd voorzien kan zich erop beroepen of eraan verzaken"
+    },
+    "buyer_conditions": {
+      "description": "Opschortende voorwaarden in voordeel van de KANDIDAAT-KOPER",
+      "conditions": {
+        "soil_decree": {
+          "id": "COND_BUYER_SOIL",
+          "title": "Vlaams Bodemdecreet",
+          "options": {
+            "option_1": {
+              "name": "GEEN RISICOGROND en GEEN SANERINGSVERPLICHTING",
+              "requirements": [
+                "Bekomen bodemattest vóór verstrijken verkoopbelofte termijn",
+                "Bodemattest toont geen gegevens bij OVAM OF geen bodemverontreiniging die saneringsverplichting geeft",
+                "Zekerheid dat eigendom geen risicogrond is via navraag OVAM en gemeente"
+              ]
+            },
+            "option_2": {
+              "name": "WEL RISICOGROND maar GEEN SANERINGSVERPLICHTING",
+              "requirements": [
+                "Bekomen bodemattest vóór verstrijken verkoopbelofte termijn",
+                "Bodemattest toont geen bodemverontreiniging die saneringsverplichting geeft"
+              ],
+              "seller_obligation": "Kandidaat-verkoper geeft opdracht aan notaris om op zijn kosten oriënterend bodemonderzoek te laten uitvoeren indien nodig"
+            }
+          }
+        },
+        "spatial_planning": {
+          "id": "COND_BUYER_SPATIAL",
+          "title": "Ruimtelijke ordening - ligging en bestemming",
+          "requirements": [
+            "Eigendom niet zonevreemd",
+            "Vereiste vergunningen werden afgeleverd (tenzij vermoeden van vergunning)",
+            "Geen bouwmisdrijf",
+            "Geen stedenbouwkundige beschermingsmaatregel",
+            "Niet gelegen in onteigening of ontwerp onteigeningsplan",
+            "Geen ongeldige verdeling",
+            "Stedenbouwkundig uittreksel (indien gemeente beschikt over plannen- en vergunningenregister)"
+          ]
+        },
+        "financing": {
+          "id": "COND_BUYER_FINANCING",
+          "title": "Financiering",
+          "key_terms": {
+            "amount": "Maximaal de verkoopprijs",
+            "conditions": "Normale actuele marktvoorwaarden",
+            "waiver_procedure": {
+              "method": "Aangetekend schrijven aan vastgoedmakelaar en notaris verkoper",
+              "deadline": "Uiterlijk 14 kalenderdagen na dagtekening overeenkomst",
+              "proof_required": "Minstens twee originele attesten van verschillende Belgische financiële instellingen die bevestigen dat krediet niet kan worden toegestaan"
+            }
+          }
+        }
+      }
+    },
+    "mutual_conditions": {
+      "description": "Opschortende voorwaarden in voordeel van BEIDE PARTIJEN",
+      "conditions": {
+        "free_and_unencumbered": {
+          "id": "COND_MUTUAL_FREE",
+          "title": "Verkoop voor vrij en onbelast en zonder juridische belemmeringen",
+          "requirements": [
+            "Toezegging (schuld)eisers dat eigendom vrij en onbelast verkocht kan worden",
+            "Geen bezwarende in- of overschrijvingen of kantmeldingen",
+            "Geen andere bezwarende vorderingen of belemmeringen",
+            "Zekerheid dat aan voorwaarden van (schuld)eisers kan worden voldaan"
+          ],
+          "costs": "Ten laste van kandidaat-verkoper",
+          "seller_obligation": "Ondertekening overeenkomst impliceert dat verkoper niet op hoogte is van problemen"
+        },
+        "court_authorization": {
+          "id": "COND_MUTUAL_COURT",
+          "title": "Rechterlijke machtiging tot verkoop uit de hand",
+          "applicability": "Enkel indien van toepassing",
+          "requirement": "Bekomen van rechterlijke machtiging vóór verstrijken verkoopbelofte termijn"
+        }
+      }
+    }
+  },
+  "price_and_payment": {
+    "section": "E. Prijs en betalingsmodaliteiten",
+    "sale_price": {
+      "id": "PRICE_MAIN",
+      "amount_field": "verkoopprijs",
+      "gross_or_net": "Te bepalen: bruto of netto (na aftrek registratierechten en kosten)",
+      "payment_timing": "Contant bij verlijden notariële akte",
+      "payment_method": "Via rekening van instrumenterende notaris(sen)"
+    },
+    "advance_payment": {
+      "description": "Het voorschot/optieprijs wordt aangerekend op de koopprijs bij verlijden akte",
+      "reference": "Zie sectie C. Optieprijs - Waarborg - Voorschot"
+    },
+    "interest_clause": {
+      "description": "Geen interesten verschuldigd op koopprijs tussen ondertekening en betaling",
+      "exception": "Tenzij put-optie gelicht wordt (dan 7% per jaar op saldo)"
+    }
+  },
+  "seller_declarations": {
+    "section": "F. Verklaringen verkoper",
+    "mandatory_declarations": {
+      "ownership": {
+        "id": "DECL_OWNERSHIP",
+        "title": "Eigendomsrecht",
+        "content": "Verkoper verklaart eigenaar te zijn en bevoegd te verkopen zonder beperking"
+      },
+      "mortgage_free": {
+        "id": "DECL_MORTGAGE",
+        "title": "Hypotheekvrij",
+        "content": "Eigendom zal vrij en onbelast worden overgedragen",
+        "costs": "Kosten afbetaling hypotheek ten laste verkoper"
+      },
+      "conformity_building": {
+        "id": "DECL_CONFORMITY",
+        "title": "Conformiteit artikel 577-2 § 8 BW",
+        "subtitle": "Elektrische installatie",
+        "requirements": {
+          "compliance_certificate": "Vereist voor installaties ouder dan 25 jaar of niet conform",
+          "age_threshold": "25 jaar (gerekend vanaf controleverslag of aansluitingsverslag)",
+          "seller_costs": "Ten laste van verkoper",
+          "delivery_timing": "Ten laatste bij ondertekening notariële akte",
+          "non_compliance_consequence": "Bij niet-conformiteit moet verkoper laten herstellen of akkoord krijgen om prijs te verminderen"
+        }
+      },
+      "epc": {
+        "id": "DECL_EPC",
+        "title": "Energieprestatiecertificaat (EPC)",
+        "requirement": "Moet ter beschikking gesteld worden aan kandidaat-koper",
+        "validity": "Maximum 10 jaar geldig",
+        "declaration": "Kandidaat-koper verklaart kennis genomen te hebben van het EPC"
+      },
+      "asbestos": {
+        "id": "DECL_ASBESTOS",
+        "title": "Asbestverklaring",
+        "applicability": "Voor woningen met bouwvergunning vóór 2001",
+        "requirement": "Asbestinventaris of attest afwezigheid asbest",
+        "timing": "Vóór verlijden authentieke akte",
+        "alternatives": {
+          "option_1": "Verklaring geen vermoeden asbesthoudende materialen",
+          "option_2": "Koper verzaakt aan asbestinventaris (eigen risico)"
+        }
+      },
+      "insurance_ten_year_liability": {
+        "id": "DECL_INSURANCE",
+        "title": "Tienjarige aansprakelijkheidsverzekering bouwsector",
+        "law_reference": "Wet 31 mei 2017",
+        "applicability": "Werken in onroerende staat waarvoor vergunning afgeleverd na 1 juli 2018",
+        "coverage": "Soliditeit, stabiliteit en waterdichtheid van gesloten ruwbouw",
+        "period": "10 jaar na aanvaarding werken",
+        "requirement": "Attest verzekeraar moet overhandigd worden aan koper",
+        "seller_declaration_field": "Verkoper verklaart of er wel/geen dergelijke werken werden uitgevoerd"
+      },
+      "expropriation": {
+        "id": "DECL_EXPROPRIATION",
+        "title": "Onteigening en overheidsbesluiten",
+        "buyer_obligation": "Koper moet zich schikken naar alle overheidsvoorschriften zonder verhaal op verkoper",
+        "seller_declaration": "Verkoper verklaart dat eigendom op heden:\n- Geen voorwerp is van stedenbouwkundige beschermingsmaatregel\n- Niet gelegen is in onteigening\n- Geen kennis van voornemen tot onteigening"
+      },
+      "forest_decree": {
+        "id": "DECL_FOREST",
+        "title": "Bosdecreet",
+        "template_options": [
+          "Niet van toepassing",
+          "Van toepassing met verplichtingen"
+        ]
+      },
+      "heritage_inventory": {
+        "id": "DECL_HERITAGE",
+        "title": "Inventaris onroerend erfgoed",
+        "declaration": "Verkoper verklaart of goed wel/niet opgenomen is in inventaris",
+        "inventories": [
+          "Landschapsatlas",
+          "Inventaris archeologische zones",
+          "Inventaris bouwkundig erfgoed",
+          "Inventaris landschappelijk erfgoed"
+        ],
+        "reference": "Artikel 4.1.11 Onroerend Erfgoed Decreet",
+        "buyer_notice": "Kopers worden gewezen op rechtsgevolgen van opname in inventaris"
+      },
+      "building_permits": {
+        "id": "DECL_PERMITS",
+        "title": "Bouwvergunningen",
+        "seller_declaration": "Voor zover verkoper zelf werken verricht:\n- Nodige vergunningen bekomen\n- Geen bouwmisdrijf\n- Vereiste vergunningen afgeleverd OF gebouw vermoed vergund",
+        "exception_field": "Ruimte voor uitzonderingen"
+      },
+      "vacant_buildings": {
+        "id": "DECL_VACANT",
+        "title": "Leegstaande gebouwen",
+        "declaration": "Eigendom niet opgenomen in inventaris leegstaande/verwaarloosde gebouwen"
+      },
+      "pre_emption_rights": {
+        "id": "DECL_PREEMPTION",
+        "title": "Voorkooprechten",
+        "declaration": "Voor zover bekend geldt geen voorkooprecht voor derden"
+      },
+      "repair_claims": {
+        "id": "DECL_REPAIR",
+        "title": "Herstelvorderingen",
+        "reference": "Artikel 3.43 Vlaamse Codex Wonen",
+        "declaration": "Verkoper heeft geen kennis van vordering of veroordeling"
+      },
+      "soil_declaration": {
+        "id": "DECL_SOIL",
+        "title": "Bodemattest verklaring",
+        "options": {
+          "option_1": "Geen risicogrond",
+          "option_2": "Wel risicogrond met specificatie inrichtingen",
+          "option_3": "Geen inrichting of activiteit die bodemverontreiniging kan veroorzaken"
+        },
+        "soil_certificate_fields": {
+          "date": "Datum bodemattest",
+          "reference": "Referentienummer OVAM",
+          "content": "Inhoud bodemattest"
+        }
+      }
+    }
+  },
+  "sanctions": {
+    "section": "G. Sanctieregeling",
+    "description": "Gevolgen van niet-naleving van de overeenkomst",
+    "clauses": {
+      "express_termination": {
+        "id": "SANCTION_TERMINATION",
+        "title": "Uitdrukkelijk ontbindend beding",
+        "description": "Bij niet-naleving kan onschuldige partij naar keuze:",
+        "options": [
+          "Uitvoering eisen in rechte indien mogelijk",
+          "Ontbinding vorderen van de overeenkomst"
+        ],
+        "additional_rights": "Steeds met schadevergoeding en interesten indien van toepassing",
+        "procedure": "Na voorafgaande ingebrekestelling per aangetekende brief met 15 dagen termijn"
+      },
+      "fixed_compensation": {
+        "id": "SANCTION_COMPENSATION",
+        "title": "Conventionele schadevergoeding",
+        "principle": "Bij bewezen tekortkoming zonder tijdige regularisatie na ingebrekestelling",
+        "amounts": {
+          "deposit_forfeiture": "Optieprijs/waarborg/voorschot komt toe aan onschuldige partij",
+          "additional_if_insufficient": "Indien ontoereikend: aanvullende schadevergoeding van 10% van verkoopprijs",
+          "seller_specific": "Bij tekortkoming verkoper: minimum 10% van verkoopprijs (naast teruggave voorschot)"
+        },
+        "legal_basis": "Artikel 1226 BW - partijen beoordelen zelf moeilijkheid om schade te bewijzen"
+      },
+      "default_interest": {
+        "id": "SANCTION_INTEREST",
+        "title": "Nalatigheidsinteresten",
+        "rate": "Wettelijke intrestvoet",
+        "applicability": "Op alle sommen die partij aan andere partij verschuldigd is",
+        "start_date": "Van rechtswege vanaf vervaldag zonder ingebrekestelling"
+      },
+      "seller_default_specifics": {
+        "id": "SANCTION_SELLER",
+        "title": "Specifieke gevallen verkoper in gebreke",
+        "scenarios": {
+          "property_sale_to_third_party": {
+            "description": "Als verkoper eigendom verkoopt aan derde",
+            "consequence": "Dubbele schadevergoeding verschuldigd",
+            "rationale": "Verkoopbelofte werd verleend door beide partijen, verkoper heeft zich ook verbonden"
+          },
+          "call_option_exercised": {
+            "description": "Als koper call-optie heeft gelicht",
+            "seller_obligation": "Verkoper MOET meewerken aan notariële akte",
+            "failure_consequence": "Schadevergoeding + eventueel gedwongen uitvoering"
+          }
+        }
+      }
+    }
+  },
+  "costs_and_charges": {
+    "section": "H. Kosten en lasten",
+    "principles": {
+      "general_rule": "Registratierechten en kosten van de akte ten laste van koper",
+      "sales_commission": "Verkoophonorarium ten laste van verkoper",
+      "deed_costs": "Aktekosten volgens gebruikelijke verdeling notariaat"
+    },
+    "specific_costs": {
+      "seller_costs": [
+        "Hypotheekafbetaling",
+        "Verkrijgen attest vrij en onbelast",
+        "Verplichte attesten en certificaten (elektriciteit, EPC, asbest indien vereist)",
+        "Bodemonderzoek indien risicogrond",
+        "Makelaarscommissie"
+      ],
+      "buyer_costs": [
+        "Registratierechten",
+        "Notariskosten voor aankoop",
+        "Financieringskosten",
+        "Eventuele architectuurskosten voor inspecties"
+      ]
+    },
+    "real_estate_commission": {
+      "description": "Makelaarscommissie",
+      "amount_field": "percentage of fixed amount",
+      "payer": "Verkoper",
+      "due_date": "Bij verlijden notariële akte",
+      "calculation_basis": "Op verkoopprijs"
+    }
+  },
+  "other_provisions": {
+    "section": "I. Diverse bepalingen",
+    "clauses": {
+      "risk_transfer": {
+        "id": "OTHER_RISK",
+        "title": "Overgangrisico",
+        "principle": "Goed reist op risico verkoper tot verlijden akte",
+        "seller_obligation": "Verkoper moet eigendom onderhouden en in goede staat bewaren"
+      },
+      "possession": {
+        "id": "OTHER_POSSESSION",
+        "title": "Ingebruikname",
+        "standard": "Bij verlijden notariële akte",
+        "condition": "Leeg, vrij en ontruimd van personen en goederen",
+        "alternatives_field": "Andere afspraak mogelijk (vb. bij oplevering na werken)"
+      },
+      "applicable_law": {
+        "id": "OTHER_LAW",
+        "title": "Toepasselijk recht",
+        "jurisdiction": "Belgisch recht",
+        "court": "Rechtbanken van arrondissement waar onroerend goed gelegen is"
+      },
+      "personal_data": {
+        "id": "OTHER_GDPR",
+        "title": "Verwerking persoonsgegevens",
+        "purpose": "Uitvoering overeenkomst",
+        "retention": "Conform wettelijke verplichtingen",
+        "rights": "Recht op inzage, verbetering, wissing volgens GDPR"
+      },
+      "entire_agreement": {
+        "id": "OTHER_ENTIRE",
+        "title": "Volledigheid",
+        "principle": "Deze overeenkomst vervangt alle eerdere afspraken",
+        "modifications": "Wijzigingen enkel geldig indien schriftelijk en door beide partijen ondertekend"
+      }
+    }
+  },
+  "signatures": {
+    "section": "Ondertekening",
+    "requirements": {
+      "original_copies": "Minimum 2 originelen",
+      "distribution": "1 exemplaar per partij",
+      "date": "Datum en plaats van ondertekening",
+      "signatories": [
+        "Alle kandidaat-verkopers",
+        "Alle kandidaat-kopers",
+        "Vastgoedmakelaar (voor kennisname en bemiddeling)"
+      ]
+    },
+    "legal_effect": {
+      "binding": "Overeenkomst is bindend vanaf ondertekening door beide partijen",
+      "authenticity": "Onderhands contract (geen notariële akte)",
+      "registration": "Geen registratieplicht (tenzij vrijwillig)"
+    }
+  },
+  "template_field_mapping": {
+    "description": "Mapping van Word template merge fields naar data velden",
+    "party_fields": {
+      "seller": {
+        "prefix": "Eig_",
+        "fields": {
+          "Titel_Adres": "Aanhef (De heer/Mevrouw)",
+          "Naam": "Familienaam",
+          "Voornaam": "Voornaam",
+          "AdresA": "Straat en nummer",
+          "Bus": "Busnummer",
+          "Postcode": "Postcode",
+          "Gemeente": "Gemeente",
+          "Geboorte_plaats": "Geboorteplaats",
+          "Geboorte_Datum": "Geboortedatum",
+          "Rijksregister": "Rijksregisternummer",
+          "Burgerlijke_staat": "Burgerlijke staat"
+        },
+        "multiple_parties": "Prefix 2_Eig_, 3_Eig_, 4_Eig_ voor meerdere verkopers"
+      },
+      "buyer": {
+        "prefix": "PRE_BUYER_",
+        "fields": {
+          "Titel_Adres": "Aanhef",
+          "P_Naam": "Familienaam",
+          "Voornaam": "Voornaam",
+          "AdresA": "Straat en nummer",
+          "P_Box": "Busnummer",
+          "Postcode": "Postcode",
+          "Gemeente": "Gemeente",
+          "Geboorte_plaats": "Geboorteplaats",
+          "Geboorte_datum": "Geboortedatum",
+          "Burgerlijke_staat": "Burgerlijke staat"
+        },
+        "multiple_parties": "Prefix 2_PRE_BUYER_, 3_PRE_BUYER_, 4_PRE_BUYER_ voor meerdere kopers"
+      },
+      "property": {
+        "fields": {
+          "Type_pand": "Type onroerend goed",
+          "P_Gemeente": "Gemeente",
+          "Straat": "Straatnaam",
+          "Huisnummer": "Huisnummer",
+          "P_Postcode": "Postcode",
+          "Afdeling": "Kadastrale afdeling",
+          "Secties": "Sectie(s)",
+          "Nummers": "Perceelnummer(s)",
+          "Kadastraal_opp": "Oppervlakte m²",
+          "KI": "Kadastraal inkomen"
+        }
+      },
+      "notaries": {
+        "seller_notary": {
+          "prefix": "PRE_NOTSEL_",
+          "fields": {
+            "Bedrijf": "Kantoor notaris",
+            "AdresA": "Adres",
+            "Postcode": "Postcode",
+            "Gemeente": "Gemeente",
+            "Telefoon": "Telefoonnummer",
+            "Email": "E-mailadres"
+          }
+        },
+        "buyer_notary": {
+          "prefix": "PRE_NOTBUY_",
+          "fields": {
+            "Bedrijf": "Kantoor notaris",
+            "AdresA": "Adres",
+            "Postcode": "Postcode",
+            "Gemeente": "Gemeente",
+            "Telefoon": "Telefoonnummer",
+            "Email": "E-mailadres"
+          }
+        }
+      },
+      "financial": {
+        "fields": {
+          "Voorschot": "Optieprijs/waarborg/voorschot bedrag",
+          "Verkoopprijs": "Verkoopprijs",
+          "Datum_van_attest": "Datum bodemattest",
+          "Bodemattest": "Referentienummer bodemattest"
+        }
+      }
+    }
+  },
+  "document_metadata": {
+    "version": "0.1",
+    "created_date": "2025-02-09",
+    "based_on_template_date": "2022-01-01",
+    "purpose": "Structured clause library for Belgian (Flemish) mutual option agreement (tweezijdige aankoopbelofte)",
+    "usage": "Reference document for legal tech systems, document automation, and contract analysis",
+    "total_sections": 17,
+    "language": "Dutch (Belgian/Flemish)",
+    "legal_jurisdiction": "Belgium - Flemish Region"
+  }
+}
