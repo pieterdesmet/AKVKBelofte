@@ -97,10 +97,24 @@ def assemble_strict(dossier: dict, selection: dict) -> dict:
     confidence_score = round(100 - (2 * len(unresolved)) - (5 * high_risk_count))
     confidence_score = max(0, min(100, confidence_score))
 
-    flags = [
-        {"type": "unresolved_placeholder", "placeholder": u["placeholder"], "clause_id": u["clause_id"]}
-        for u in unresolved
-    ]
+    flags: list[dict] = []
+
+    # Merge risk_flags from selection into assembled flags
+    for rf in selection.get("risk_flags", []):
+        flags.append({
+            "type": rf.get("type", "risk_flag"),
+            "clause_id": rf["clause_id"],
+            "risk_level": rf["risk_level"],
+            "detail": rf["flag"],
+        })
+
+    # Add unresolved placeholder flags
+    for u in unresolved:
+        flags.append({
+            "type": "unresolved_placeholder",
+            "placeholder": u["placeholder"],
+            "clause_id": u["clause_id"],
+        })
 
     return {
         "document_text": "\n\n".join(text_parts),
