@@ -3,3 +3,4 @@ __pycache__/
 .pytest_cache/
 examples/out/
 examples/review_packs/
+.local_out/
