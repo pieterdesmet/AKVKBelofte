@@ -1,0 +1,71 @@
+{
+  "dossier_id": "fixture_f6",
+  "partijen": {
+    "verkopers": [
+      {
+        "titel_adres": "De heer",
+        "naam": "Reynders",
+        "voornaam": "Bart",
+        "adres": "Parkweg 6, 2100 Deurne",
+        "geboorteplaats": "Antwerpen",
+        "geboortedatum": "1972-10-10",
+        "rijksregisternummer": "TEST_RRN_F6_001",
+        "burgerlijke_staat": "gehuwd"
+      }
+    ],
+    "kopers": [
+      {
+        "titel_adres": "Mevrouw",
+        "naam": "Verhoeven",
+        "voornaam": "Sofie",
+        "adres": "Turnhoutsebaan 150, 2100 Deurne",
+        "geboorteplaats": "Antwerpen",
+        "geboortedatum": "1988-04-22",
+        "rijksregisternummer": "TEST_RRN_F6_002",
+        "burgerlijke_staat": "ongehuwd"
+      }
+    ]
+  },
+  "pand": {
+    "pandtype": "woning",
+    "straat": "Parkweg",
+    "huisnummer": "6",
+    "postcode": "2100",
+    "gemeente": "Deurne",
+    "kadaster": {
+      "afdeling": "2e",
+      "sectie": "G",
+      "perceelnummer": "333H",
+      "oppervlakte": "250"
+    },
+    "ki": 1300,
+    "bouwjaar": 1990
+  },
+  "transactie": {
+    "verkoopsprijs": 295000,
+    "waarborg": 29500,
+    "akte_uiterlijk": "2026-09-15",
+    "genot": "vrij"
+  },
+  "notaris": {
+    "koper": "Notariskantoor Luyten, Deurne"
+  },
+  "bodemattest": {
+    "datum": "2026-01-25",
+    "referentie": "OVAM-2026-TEST-F6"
+  },
+  "verklaarde_opties": {
+    "bodem_verklaring": "geen risicogrond is en niet is opgenomen in de inventaris van gronden",
+    "asbest_optie": "asbestinventarisattest beschikbaar, geen asbesthoudende materialen in slechte staat"
+  },
+  "attesten": {
+    "bodem": "ok",
+    "stedenbouw": "ok",
+    "epc_label": "C",
+    "asbest": "verplicht_ok",
+    "elektriciteit": "ok"
+  },
+  "financiering_status": "bevestigd",
+  "fiscaliteit": "registratie",
+  "mede_eigendom": false
+}

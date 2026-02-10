@@ -1,0 +1,73 @@
+{
+  "dossier_id": "fixture_f3",
+  "partijen": {
+    "verkopers": [
+      {
+        "titel_adres": "Mevrouw",
+        "naam": "Van Damme",
+        "voornaam": "Katrien",
+        "adres": "Leopoldlaan 30, 2500 Lier",
+        "geboorteplaats": "Lier",
+        "geboortedatum": "1975-07-14",
+        "rijksregisternummer": "TEST_RRN_F3_001",
+        "burgerlijke_staat": "weduwe"
+      }
+    ],
+    "kopers": [
+      {
+        "titel_adres": "De heer",
+        "naam": "Hermans",
+        "voornaam": "Bram",
+        "adres": "Antwerpsestraat 8, 2500 Lier",
+        "geboorteplaats": "Mechelen",
+        "geboortedatum": "1988-02-28",
+        "rijksregisternummer": "TEST_RRN_F3_002",
+        "burgerlijke_staat": "ongehuwd"
+      }
+    ]
+  },
+  "pand": {
+    "pandtype": "woning",
+    "straat": "Leopoldlaan",
+    "huisnummer": "30",
+    "postcode": "2500",
+    "gemeente": "Lier",
+    "kadaster": {
+      "afdeling": "1e",
+      "sectie": "D",
+      "perceelnummer": "88G",
+      "oppervlakte": "310"
+    },
+    "ki": 1100,
+    "bouwjaar": 1978
+  },
+  "transactie": {
+    "verkoopsprijs": 310000,
+    "waarborg": 31000,
+    "akte_uiterlijk": "2026-09-01",
+    "genot": "vrij"
+  },
+  "notaris": {
+    "verkoper": "Notariskantoor Bogaert, Lier",
+    "koper": "Notariskantoor Peeters, Mechelen"
+  },
+  "bodemattest": {
+    "datum": "2025-12-20",
+    "referentie": "OVAM-2025-TEST-F3",
+    "inhoud": "Geen verontreiniging vastgesteld"
+  },
+  "verklaarde_opties": {
+    "bodem_verklaring": "geen risicogrond is en niet is opgenomen in de inventaris van gronden",
+    "asbest_optie": "asbestinventarisattest beschikbaar, geen asbesthoudende materialen in slechte staat"
+  },
+  "attesten": {
+    "bodem": "ok",
+    "stedenbouw": "ok",
+    "epc_label": "E",
+    "asbest": "verplicht_ok",
+    "elektriciteit": "niet_conform"
+  },
+  "financiering_status": "bevestigd",
+  "fiscaliteit": "registratie",
+  "mede_eigendom": false
+}

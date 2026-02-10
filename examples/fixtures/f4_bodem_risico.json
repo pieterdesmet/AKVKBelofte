@@ -1,0 +1,83 @@
+{
+  "dossier_id": "fixture_f4",
+  "partijen": {
+    "verkopers": [
+      {
+        "titel_adres": "De heer",
+        "naam": "Cools",
+        "voornaam": "Dirk",
+        "adres": "Industrieweg 44, 2440 Geel",
+        "geboorteplaats": "Geel",
+        "geboortedatum": "1965-09-30",
+        "rijksregisternummer": "TEST_RRN_F4_001",
+        "burgerlijke_staat": "gehuwd"
+      },
+      {
+        "titel_adres": "Mevrouw",
+        "naam": "Cools-Bernaerts",
+        "voornaam": "Leen",
+        "adres": "Industrieweg 44, 2440 Geel",
+        "geboorteplaats": "Mol",
+        "geboortedatum": "1967-04-18",
+        "rijksregisternummer": "TEST_RRN_F4_002",
+        "burgerlijke_staat": "gehuwd"
+      }
+    ],
+    "kopers": [
+      {
+        "titel_adres": "De heer",
+        "naam": "Aerts",
+        "voornaam": "Wouter",
+        "adres": "Markt 1, 2440 Geel",
+        "geboorteplaats": "Geel",
+        "geboortedatum": "1993-01-05",
+        "rijksregisternummer": "TEST_RRN_F4_003",
+        "burgerlijke_staat": "ongehuwd"
+      }
+    ]
+  },
+  "pand": {
+    "pandtype": "grond met woning",
+    "straat": "Industrieweg",
+    "huisnummer": "44",
+    "postcode": "2440",
+    "gemeente": "Geel",
+    "kadaster": {
+      "afdeling": "3e",
+      "sectie": "E",
+      "perceelnummer": "502C",
+      "oppervlakte": "1200"
+    },
+    "ki": 1850,
+    "bouwjaar": 1975
+  },
+  "transactie": {
+    "verkoopsprijs": 420000,
+    "waarborg": 42000,
+    "akte_uiterlijk": "2026-10-01",
+    "genot": "vrij"
+  },
+  "notaris": {
+    "verkoper": "Notariskantoor Lenaerts, Geel",
+    "koper": "Notariskantoor Verbeke, Westerlo"
+  },
+  "bodemattest": {
+    "datum": "2026-01-20",
+    "referentie": "OVAM-2026-TEST-F4",
+    "inhoud": "Historische bodemverontreiniging vastgesteld, geen saneringsverplichting"
+  },
+  "verklaarde_opties": {
+    "bodem_verklaring": "opgenomen is in de inventaris van gronden maar geen saneringsverplichting heeft",
+    "asbest_optie": "asbestinventarisattest beschikbaar, geen asbesthoudende materialen in slechte staat"
+  },
+  "attesten": {
+    "bodem": "risico",
+    "stedenbouw": "ok",
+    "epc_label": "D",
+    "asbest": "verplicht_ok",
+    "elektriciteit": "ok"
+  },
+  "financiering_status": "bevestigd",
+  "fiscaliteit": "registratie",
+  "mede_eigendom": false
+}

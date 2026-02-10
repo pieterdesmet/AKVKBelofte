@@ -2,6 +2,11 @@
 Clause selection engine.
 Evaluates activation rules from the clause library against dossier data.
 Generates risk flags. Never invents legal text or draws legal conclusions (GN-001).
+
+Guardrails:
+- Activation rules evaluate ONLY on dossier paths via simple equals checks.
+- All derived variables are explicitly logged in "derived_fields" with source path.
+- Per-clause activation evaluation is logged in "activation_evaluation".
 """
 
 from __future__ import annotations
@@ -24,9 +29,34 @@ def _resolve_dot_path(data: dict, path: str) -> Any:
     return current
 
 
-def _derive_activation_vars(dossier: dict) -> dict[str, str]:
-    """Derive activation variables from dossier data for rule matching."""
+# Each derived field: (variable_name, source_dossier_path, derivation_logic_description)
+_DERIVATION_SPECS = [
+    {
+        "variable": "bodem_optie",
+        "source_path": "attesten.bodem",
+        "logic": "attesten.bodem == 'ok' → GEEN_RISICOGROND; anders → WEL_RISICOGROND",
+    },
+    {
+        "variable": "financiering_vereist",
+        "source_path": "financiering_status",
+        "logic": "financiering_status != 'bevestigd' → true; anders → false",
+    },
+    {
+        "variable": "bouwvergunning_voor_2001",
+        "source_path": "pand.bouwjaar",
+        "logic": "pand.bouwjaar < 2001 → true; anders → false",
+    },
+]
+
+
+def _derive_activation_vars(dossier: dict) -> tuple[dict[str, str], list[dict]]:
+    """
+    Derive activation variables from dossier data for rule matching.
+    Returns (activation_vars, derived_fields_log).
+    Each derived variable is traceable back to its source dossier field.
+    """
     v: dict[str, str] = {}
+    log: list[dict] = []
 
     # bodem_optie: attesten.bodem == "ok" → GEEN_RISICOGROND
     bodem = _resolve_dot_path(dossier, "attesten.bodem")
@@ -34,6 +64,13 @@ def _derive_activation_vars(dossier: dict) -> dict[str, str]:
         v["bodem_optie"] = "GEEN_RISICOGROND"
     elif bodem:
         v["bodem_optie"] = "WEL_RISICOGROND"
+    log.append({
+        "variable": "bodem_optie",
+        "source_path": "attesten.bodem",
+        "source_value": bodem,
+        "derived_value": v.get("bodem_optie"),
+        "logic": _DERIVATION_SPECS[0]["logic"],
+    })
 
     # financiering_vereist: financiering_status != "bevestigd"
     fin = dossier.get("financiering_status")
@@ -41,6 +78,13 @@ def _derive_activation_vars(dossier: dict) -> dict[str, str]:
         v["financiering_vereist"] = "true"
     else:
         v["financiering_vereist"] = "false"
+    log.append({
+        "variable": "financiering_vereist",
+        "source_path": "financiering_status",
+        "source_value": fin,
+        "derived_value": v["financiering_vereist"],
+        "logic": _DERIVATION_SPECS[1]["logic"],
+    })
 
     # bouwvergunning_voor_2001: pand.bouwjaar < 2001
     bouwjaar = _resolve_dot_path(dossier, "pand.bouwjaar")
@@ -48,8 +92,15 @@ def _derive_activation_vars(dossier: dict) -> dict[str, str]:
         v["bouwvergunning_voor_2001"] = "true"
     else:
         v["bouwvergunning_voor_2001"] = "false"
+    log.append({
+        "variable": "bouwvergunning_voor_2001",
+        "source_path": "pand.bouwjaar",
+        "source_value": bouwjaar,
+        "derived_value": v["bouwvergunning_voor_2001"],
+        "logic": _DERIVATION_SPECS[2]["logic"],
+    })
 
-    return v
+    return v, log
 
 
 def _evaluate_rule(rule: str, activation_vars: dict[str, str]) -> bool:
@@ -122,7 +173,7 @@ def _generate_risk_flags(dossier: dict, selected_clauses: list[dict]) -> list[di
                 "risk_level": "medium",
                 "source_field": None,
                 "source_value": None,
-                "flag": f"Clause requires_jurist=true. Standaard review bij ondertekening.",
+                "flag": "Clause requires_jurist=true. Standaard review bij ondertekening.",
             })
 
     return flags
@@ -131,20 +182,32 @@ def _generate_risk_flags(dossier: dict, selected_clauses: list[dict]) -> list[di
 def select_clauses(dossier: dict, library: list[dict]) -> dict:
     """
     Select clauses from library based on activation rules and dossier data.
-    Returns selection result with selected_clauses, risk_flags, skipped_clause_ids.
+    Returns selection result with selected_clauses, risk_flags, skipped_clause_ids,
+    activation_evaluation (per-clause log), and derived_fields (transparency).
     """
     dossier_id = dossier.get("dossier_id", "unknown")
-    activation_vars = _derive_activation_vars(dossier)
+    activation_vars, derived_fields = _derive_activation_vars(dossier)
 
     selected: list[dict] = []
     skipped: list[dict] = []
+    activation_evaluation: list[dict] = []
 
     for clause in library:
-        active, reason = _evaluate_activation(clause.get("activation", []), activation_vars)
+        cid = clause["id"]
+        rules = clause.get("activation", [])
+        active, reason = _evaluate_activation(rules, activation_vars)
+
+        activation_evaluation.append({
+            "clause_id": cid,
+            "rules": rules,
+            "evaluated": active,
+            "reason": reason,
+        })
+
         if active:
             selected.append({**clause, "activation_reason": reason})
         else:
-            skipped.append({"id": clause["id"], "reason": reason})
+            skipped.append({"id": cid, "reason": reason})
 
     risk_flags = _generate_risk_flags(dossier, selected)
 
@@ -161,6 +224,8 @@ def select_clauses(dossier: dict, library: list[dict]) -> dict:
         "risk_flags": risk_flags,
         "skipped_clause_ids": skipped,
         "validated_against": list(activation_vars.items()),
+        "derived_fields": derived_fields,
+        "activation_evaluation": activation_evaluation,
         "summary": {
             "total_in_library": len(library),
             "selected": len(selected),

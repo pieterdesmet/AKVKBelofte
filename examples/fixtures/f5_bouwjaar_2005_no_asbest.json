@@ -1,0 +1,73 @@
+{
+  "dossier_id": "fixture_f5",
+  "partijen": {
+    "verkopers": [
+      {
+        "titel_adres": "De heer",
+        "naam": "Goossens",
+        "voornaam": "Filip",
+        "adres": "Nieuwstraat 12, 2260 Westerlo",
+        "geboorteplaats": "Westerlo",
+        "geboortedatum": "1980-06-01",
+        "rijksregisternummer": "TEST_RRN_F5_001",
+        "burgerlijke_staat": "ongehuwd"
+      }
+    ],
+    "kopers": [
+      {
+        "titel_adres": "Mevrouw",
+        "naam": "Maes",
+        "voornaam": "Julie",
+        "adres": "Boerenkrijglaan 7, 2260 Westerlo",
+        "geboorteplaats": "Herentals",
+        "geboortedatum": "1992-12-25",
+        "rijksregisternummer": "TEST_RRN_F5_002",
+        "burgerlijke_staat": "ongehuwd"
+      }
+    ]
+  },
+  "pand": {
+    "pandtype": "woning",
+    "straat": "Nieuwstraat",
+    "huisnummer": "12",
+    "postcode": "2260",
+    "gemeente": "Westerlo",
+    "kadaster": {
+      "afdeling": "1e",
+      "sectie": "F",
+      "perceelnummer": "770D",
+      "oppervlakte": "400"
+    },
+    "ki": 1650,
+    "bouwjaar": 2005
+  },
+  "transactie": {
+    "verkoopsprijs": 375000,
+    "waarborg": 37500,
+    "akte_uiterlijk": "2026-08-15",
+    "genot": "vrij"
+  },
+  "notaris": {
+    "verkoper": "Notariskantoor Smeets, Westerlo",
+    "koper": "Notariskantoor Hendrickx, Herentals"
+  },
+  "bodemattest": {
+    "datum": "2026-02-05",
+    "referentie": "OVAM-2026-TEST-F5",
+    "inhoud": "Geen verontreiniging vastgesteld"
+  },
+  "verklaarde_opties": {
+    "bodem_verklaring": "geen risicogrond is en niet is opgenomen in de inventaris van gronden",
+    "asbest_optie": "niet van toepassing (bouwjaar na 2000)"
+  },
+  "attesten": {
+    "bodem": "ok",
+    "stedenbouw": "ok",
+    "epc_label": "A",
+    "asbest": "niet_vereist",
+    "elektriciteit": "ok"
+  },
+  "financiering_status": "bevestigd",
+  "fiscaliteit": "registratie",
+  "mede_eigendom": false
+}

@@ -1,0 +1,73 @@
+{
+  "dossier_id": "fixture_f1",
+  "partijen": {
+    "verkopers": [
+      {
+        "titel_adres": "De heer",
+        "naam": "Janssens",
+        "voornaam": "Marc",
+        "adres": "Kerkstraat 10, 2200 Herentals",
+        "geboorteplaats": "Antwerpen",
+        "geboortedatum": "1970-05-05",
+        "rijksregisternummer": "TEST_RRN_F1_001",
+        "burgerlijke_staat": "gehuwd"
+      }
+    ],
+    "kopers": [
+      {
+        "titel_adres": "Mevrouw",
+        "naam": "Wouters",
+        "voornaam": "An",
+        "adres": "Molenstraat 3, 2200 Herentals",
+        "geboorteplaats": "Leuven",
+        "geboortedatum": "1985-08-08",
+        "rijksregisternummer": "TEST_RRN_F1_002",
+        "burgerlijke_staat": "ongehuwd"
+      }
+    ]
+  },
+  "pand": {
+    "pandtype": "appartement",
+    "straat": "Stationsstraat",
+    "huisnummer": "22",
+    "postcode": "2200",
+    "gemeente": "Herentals",
+    "kadaster": {
+      "afdeling": "1e",
+      "sectie": "A",
+      "perceelnummer": "114B",
+      "oppervlakte": "85"
+    },
+    "ki": 950,
+    "bouwjaar": 1995
+  },
+  "transactie": {
+    "verkoopsprijs": 225000,
+    "waarborg": 22500,
+    "akte_uiterlijk": "2026-07-15",
+    "genot": "vrij"
+  },
+  "notaris": {
+    "verkoper": "Notariskantoor Willems, Herentals",
+    "koper": "Notariskantoor Mertens, Lier"
+  },
+  "bodemattest": {
+    "datum": "2026-01-15",
+    "referentie": "OVAM-2026-TEST-F1",
+    "inhoud": "Geen verontreiniging vastgesteld"
+  },
+  "verklaarde_opties": {
+    "bodem_verklaring": "geen risicogrond is en niet is opgenomen in de inventaris van gronden",
+    "asbest_optie": "asbestinventarisattest beschikbaar, geen asbesthoudende materialen in slechte staat"
+  },
+  "attesten": {
+    "bodem": "ok",
+    "stedenbouw": "ok",
+    "epc_label": "B",
+    "asbest": "verplicht_ok",
+    "elektriciteit": "ok"
+  },
+  "financiering_status": "bevestigd",
+  "fiscaliteit": "registratie",
+  "mede_eigendom": false
+}

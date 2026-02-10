@@ -1,0 +1,73 @@
+{
+  "dossier_id": "fixture_f2",
+  "partijen": {
+    "verkopers": [
+      {
+        "titel_adres": "De heer",
+        "naam": "De Smedt",
+        "voornaam": "Pieter",
+        "adres": "Berkenweg 5, 2300 Turnhout",
+        "geboorteplaats": "Turnhout",
+        "geboortedatum": "1968-03-12",
+        "rijksregisternummer": "TEST_RRN_F2_001",
+        "burgerlijke_staat": "gescheiden"
+      }
+    ],
+    "kopers": [
+      {
+        "titel_adres": "De heer",
+        "naam": "Martens",
+        "voornaam": "Joris",
+        "adres": "Lindestraat 18, 2300 Turnhout",
+        "geboorteplaats": "Mol",
+        "geboortedatum": "1990-11-20",
+        "rijksregisternummer": "TEST_RRN_F2_002",
+        "burgerlijke_staat": "ongehuwd"
+      }
+    ]
+  },
+  "pand": {
+    "pandtype": "woning",
+    "straat": "Berkenweg",
+    "huisnummer": "5",
+    "postcode": "2300",
+    "gemeente": "Turnhout",
+    "kadaster": {
+      "afdeling": "2e",
+      "sectie": "B",
+      "perceelnummer": "201A",
+      "oppervlakte": "450"
+    },
+    "ki": 1200,
+    "bouwjaar": 1992
+  },
+  "transactie": {
+    "verkoopsprijs": 285000,
+    "waarborg": 28500,
+    "akte_uiterlijk": "2026-08-01",
+    "genot": "vrij"
+  },
+  "notaris": {
+    "verkoper": "Notariskantoor Peters, Turnhout",
+    "koper": "Notariskantoor Claes, Mol"
+  },
+  "bodemattest": {
+    "datum": "2026-02-01",
+    "referentie": "OVAM-2026-TEST-F2",
+    "inhoud": "Geen verontreiniging vastgesteld"
+  },
+  "verklaarde_opties": {
+    "bodem_verklaring": "geen risicogrond is en niet is opgenomen in de inventaris van gronden",
+    "asbest_optie": "asbestinventarisattest beschikbaar, geen asbesthoudende materialen in slechte staat"
+  },
+  "attesten": {
+    "bodem": "ok",
+    "stedenbouw": "ok",
+    "epc_label": "C",
+    "asbest": "verplicht_ok",
+    "elektriciteit": "ok"
+  },
+  "financiering_status": "lopend",
+  "fiscaliteit": "registratie",
+  "mede_eigendom": false
+}

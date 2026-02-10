@@ -1,0 +1,43 @@
+{
+  "dossier_id": "fixture_f1",
+  "selected_clause_ids": [
+    "PARTIJEN_01",
+    "PARTIJEN_02",
+    "PAND_01",
+    "PAND_02",
+    "PAND_03",
+    "HOOFD_01",
+    "HOOFD_02",
+    "HOOFD_03",
+    "MODAL_01",
+    "MODAL_02",
+    "MODAL_03",
+    "OPTIES_01",
+    "OPTIES_02",
+    "OPTIES_03",
+    "OPSCH_BODEM_01",
+    "OPSCH_RO_01",
+    "OPSCH_VRIJ_01",
+    "PRIJS_01",
+    "VERKL_EIGEN_01",
+    "VERKL_ELEC_01",
+    "VERKL_EPC_01",
+    "VERKL_ASBEST_01",
+    "VERKL_BODEM_01",
+    "SANCT_01",
+    "SANCT_02",
+    "KOSTEN_01",
+    "DIVERS_01",
+    "DIVERS_02"
+  ],
+  "skipped_clause_ids": [
+    "OPSCH_BODEM_02",
+    "OPSCH_FIN_01"
+  ],
+  "risk_flags_high": 0,
+  "risk_flags_medium": 3,
+  "risk_flags_high_clause_ids": [],
+  "confidence_score": 100,
+  "unresolved_count": 0,
+  "unresolved_placeholders": []
+}
