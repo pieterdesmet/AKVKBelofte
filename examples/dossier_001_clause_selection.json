@@ -329,9 +329,10 @@
     {
       "clause_id": "VERKL_ELEC_01",
       "risk_level": "high",
+      "type": "human_review_required",
       "source_field": "attesten.elektriciteit",
       "source_value": "niet_conform",
-      "flag": "Elektrische installatie niet conform. Clause vereist dat verkoper laat herstellen of akkoord krijgt om prijs te verminderen vóór akte. Afspraak ontbreekt in dossier."
+      "flag": "Elektrische installatie niet conform. Clausetekst verwijst naar gevolgen bij niet-conformiteit. Exacte juridische implicatie (herstelplicht, prijsvermindering, informatieverplichting) vereist beoordeling door jurist of makelaar op basis van de concrete clausetekst en dossiercontext. Engine trekt hier geen conclusie."
     },
     {
       "clause_id": "OPSCH_FIN_01",

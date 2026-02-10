@@ -57,7 +57,8 @@
       "value": "niet_conform",
       "clause": "VERKL_ELEC_01",
       "impact": "high",
-      "detail": "Elektrische installatie niet conform. Conform clause VERKL_ELEC_01 moet verkoper laten herstellen of akkoord krijgen om prijs te verminderen. Dit moet expliciet geregeld worden vóór akte."
+      "type": "human_review_required",
+      "detail": "Elektrische installatie niet conform. Clausetekst VERKL_ELEC_01 verwijst naar gevolgen bij niet-conformiteit. De exacte juridische implicatie (herstelplicht, prijsvermindering, informatieverplichting) hangt af van de concrete clausetekst en dossiercontext. Vereist beoordeling door jurist of makelaar vóór generatie."
     },
     {
       "field": "financiering_status",
