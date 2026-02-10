@@ -44,7 +44,9 @@
   "unresolved_placeholders": [],
   "readiness_status": "DRAFT_REVIEW_REQUIRED",
   "next_actions": [
-    "Review vereist voor hoog-risico vlaggen: OPSCH_FIN_01",
-    "Laat contract nakijken door jurist (clausules: HOOFD_03, SANCT_01, SANCT_02)"
-  ]
+    "Juridische review verplicht",
+    "Review hoog-risico vlaggen: OPSCH_FIN_01"
+  ],
+  "jurist_required_count": 0,
+  "jurist_recommended_count": 3
 }

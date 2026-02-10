@@ -40,8 +40,11 @@
   "confidence_score": 100,
   "unresolved_count": 0,
   "unresolved_placeholders": [],
-  "readiness_status": "DRAFT_REVIEW_REQUIRED",
+  "readiness_status": "DRAFT_REVIEW_RECOMMENDED",
   "next_actions": [
-    "Laat contract nakijken door jurist (clausules: HOOFD_03, SANCT_01, SANCT_02)"
-  ]
+    "Juridische review aanbevolen (standaardclausules)",
+    "Controleer sanctieregeling en hoofdinhoud"
+  ],
+  "jurist_required_count": 0,
+  "jurist_recommended_count": 3
 }

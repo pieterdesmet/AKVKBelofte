@@ -5,7 +5,8 @@ Generates a folder per dossier with all artifacts needed for jurist/makelaar rev
 - assembled.json (full assembled output incl. readiness_status + next_actions)
 - selection.json (clause selection with activation evaluation)
 - risk_flags.json (extracted risk flags for quick review)
-- review_checklist.txt (human-readable checklist)
+- jurist_review.json (jurist_required + jurist_recommended clause lists)
+- review_checklist.txt (human-readable checklist with 4-status explanation)
 
 Usage:
     python -m src.review_pack <fixture_path> [--library PATH] [--outdir PATH]
@@ -75,12 +76,32 @@ def generate_review_pack(
     with open(pack_dir / "risk_flags.json", "w", encoding="utf-8") as f:
         json.dump(risk_flags_data, f, ensure_ascii=False, indent=2)
 
-    # 4. Write review_checklist.txt
+    # 4. Write jurist_review.json
+    jurist_review = selection.get("jurist_review_clauses", {})
+    jurist_review_data = {
+        "dossier_id": dossier_id,
+        "jurist_required_count": selection["summary"].get("jurist_required_count", 0),
+        "jurist_recommended_count": selection["summary"].get("jurist_recommended_count", 0),
+        "jurist_required": jurist_review.get("required", []),
+        "jurist_recommended": jurist_review.get("recommended", []),
+    }
+    with open(pack_dir / "jurist_review.json", "w", encoding="utf-8") as f:
+        json.dump(jurist_review_data, f, ensure_ascii=False, indent=2)
+
+    # 5. Write review_checklist.txt
     checklist_lines = [
         f"LEGAL REVIEW PACK — {dossier_id}",
         f"Gegenereerd: {datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M UTC')}",
         f"Readiness status: {assembled['readiness_status']}",
         f"Confidence score: {assembled['confidence_score']}",
+        "",
+        "=" * 60,
+        "READINESS STATUSSEN",
+        "=" * 60,
+        "  DRAFT_OK               — Klaar voor interne review en handtekening.",
+        "  DRAFT_REVIEW_RECOMMENDED — Standaardclausules met aanbevolen jurist review.",
+        "  DRAFT_REVIEW_REQUIRED  — Verplichte juridische review (hoog risico of bodem).",
+        "  DRAFT_BLOCKED          — Ontbrekende velden, kan niet worden afgerond.",
         "",
         "=" * 60,
         "NEXT ACTIONS",
@@ -107,13 +128,27 @@ def generate_review_pack(
     checklist_lines.extend([
         "",
         "=" * 60,
-        "REQUIRES_JURIST CLAUSULES",
+        "JURIST REVIEW — REQUIRED",
         "=" * 60,
     ])
-    jurist_clauses = [c for c in selection["selected_clauses"] if c.get("requires_jurist")]
-    for c in jurist_clauses:
-        checklist_lines.append(f"  - {c['id']} ({c['module']})")
-    if not jurist_clauses:
+    req_ids = jurist_review.get("required", [])
+    if req_ids:
+        for cid in req_ids:
+            checklist_lines.append(f"  - {cid}")
+    else:
+        checklist_lines.append("  (geen)")
+
+    checklist_lines.extend([
+        "",
+        "=" * 60,
+        "JURIST REVIEW — RECOMMENDED",
+        "=" * 60,
+    ])
+    rec_ids = jurist_review.get("recommended", [])
+    if rec_ids:
+        for cid in rec_ids:
+            checklist_lines.append(f"  - {cid}")
+    else:
         checklist_lines.append("  (geen)")
 
     checklist_lines.extend([
@@ -194,6 +229,7 @@ def main() -> None:
     print(f"  - assembled.json")
     print(f"  - selection.json")
     print(f"  - risk_flags.json")
+    print(f"  - jurist_review.json")
     print(f"  - review_checklist.txt")
 
 

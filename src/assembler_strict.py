@@ -116,13 +116,13 @@ def assemble_strict(dossier: dict, selection: dict) -> dict:
             "clause_id": u["clause_id"],
         })
 
-    # Gate rules: readiness_status + next_actions
+    # Gate rules: readiness_status + next_actions (4 statuses)
     next_actions: list[str] = []
-    jurist_clause_ids = [
-        c["id"] for c in selection["selected_clauses"]
-        if c.get("requires_jurist") and c["id"] in used
-    ]
-    has_requires_jurist = len(jurist_clause_ids) > 0
+    jurist_review = selection.get("jurist_review_clauses", {})
+    jurist_required_ids = jurist_review.get("required", [])
+    jurist_recommended_ids = jurist_review.get("recommended", [])
+    jurist_required_count = len(jurist_required_ids)
+    jurist_recommended_count = len(jurist_recommended_ids)
 
     if len(unresolved) > 0:
         readiness_status = "DRAFT_BLOCKED"
@@ -130,23 +130,28 @@ def assemble_strict(dossier: dict, selection: dict) -> dict:
             "Vul ontbrekende velden aan: "
             + ", ".join(u["placeholder"] for u in unresolved)
         )
-    elif high_risk_count >= 1 or has_requires_jurist:
+    elif high_risk_count >= 1 or jurist_required_count >= 1:
         readiness_status = "DRAFT_REVIEW_REQUIRED"
+        next_actions.append("Juridische review verplicht")
         if high_risk_count >= 1:
             high_risk_ids = [
                 rf["clause_id"] for rf in selection.get("risk_flags", [])
                 if rf.get("risk_level") == "high"
             ]
             next_actions.append(
-                "Review vereist voor hoog-risico vlaggen: " + ", ".join(high_risk_ids)
+                "Review hoog-risico vlaggen: " + ", ".join(high_risk_ids)
             )
-        if has_requires_jurist:
+        if jurist_required_count >= 1:
             next_actions.append(
-                "Laat contract nakijken door jurist (clausules: "
-                + ", ".join(jurist_clause_ids) + ")"
+                "Jurist review verplicht voor: " + ", ".join(jurist_required_ids)
             )
+    elif jurist_recommended_count >= 1:
+        readiness_status = "DRAFT_REVIEW_RECOMMENDED"
+        next_actions.append("Juridische review aanbevolen (standaardclausules)")
+        next_actions.append("Controleer sanctieregeling en hoofdinhoud")
     else:
         readiness_status = "DRAFT_OK"
+        next_actions.append("Klaar voor interne review en voorbereiding handtekening.")
 
     return {
         "document_text": "\n\n".join(text_parts),

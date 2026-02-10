@@ -46,5 +46,7 @@
   "readiness_status": "DRAFT_BLOCKED",
   "next_actions": [
     "Vul ontbrekende velden aan: {{notaris.verkoper}}, {{bodemattest.inhoud}}"
-  ]
+  ],
+  "jurist_required_count": 0,
+  "jurist_recommended_count": 3
 }

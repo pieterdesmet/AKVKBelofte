@@ -215,6 +215,16 @@ def select_clauses(dossier: dict, library: list[dict]) -> dict:
     medium = sum(1 for f in risk_flags if f["risk_level"] == "medium")
     low = sum(1 for f in risk_flags if f["risk_level"] == "low")
 
+    # Jurist review level tracking
+    jurist_required_ids = [
+        c["id"] for c in selected
+        if c.get("jurist_review_level") == "required"
+    ]
+    jurist_recommended_ids = [
+        c["id"] for c in selected
+        if c.get("jurist_review_level") == "recommended"
+    ]
+
     return {
         "dossier_id": dossier_id,
         "clause_library": "clauses_v0.2.json",
@@ -226,6 +236,10 @@ def select_clauses(dossier: dict, library: list[dict]) -> dict:
         "validated_against": list(activation_vars.items()),
         "derived_fields": derived_fields,
         "activation_evaluation": activation_evaluation,
+        "jurist_review_clauses": {
+            "required": jurist_required_ids,
+            "recommended": jurist_recommended_ids,
+        },
         "summary": {
             "total_in_library": len(library),
             "selected": len(selected),
@@ -234,5 +248,7 @@ def select_clauses(dossier: dict, library: list[dict]) -> dict:
             "risk_flags_medium": medium,
             "risk_flags_low": low,
             "requires_jurist_count": sum(1 for c in selected if c.get("requires_jurist")),
+            "jurist_required_count": len(jurist_required_ids),
+            "jurist_recommended_count": len(jurist_recommended_ids),
         },
     }

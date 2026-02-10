@@ -42,6 +42,9 @@
   "unresolved_placeholders": [],
   "readiness_status": "DRAFT_REVIEW_REQUIRED",
   "next_actions": [
-    "Laat contract nakijken door jurist (clausules: HOOFD_03, OPSCH_BODEM_02, SANCT_01, SANCT_02)"
-  ]
+    "Juridische review verplicht",
+    "Jurist review verplicht voor: OPSCH_BODEM_02"
+  ],
+  "jurist_required_count": 1,
+  "jurist_recommended_count": 3
 }

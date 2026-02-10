@@ -164,6 +164,24 @@ class TestFixtureSnapshot:
             f"[{dossier_id}] next_actions drift"
         )
 
+    def test_jurist_required_count(self, fixture_file, dossier_id, description, tmp_path):
+        """Guard: jurist_required_count must match snapshot."""
+        expected = _load_expected(fixture_file)
+        selection, _ = _run_pipeline(fixture_file, tmp_path)
+        assert selection["summary"]["jurist_required_count"] == expected["jurist_required_count"], (
+            f"[{dossier_id}] jurist_required_count drift: "
+            f"got {selection['summary']['jurist_required_count']}, expected {expected['jurist_required_count']}"
+        )
+
+    def test_jurist_recommended_count(self, fixture_file, dossier_id, description, tmp_path):
+        """Guard: jurist_recommended_count must match snapshot."""
+        expected = _load_expected(fixture_file)
+        selection, _ = _run_pipeline(fixture_file, tmp_path)
+        assert selection["summary"]["jurist_recommended_count"] == expected["jurist_recommended_count"], (
+            f"[{dossier_id}] jurist_recommended_count drift: "
+            f"got {selection['summary']['jurist_recommended_count']}, expected {expected['jurist_recommended_count']}"
+        )
+
 
 @pytest.mark.parametrize(
     "fixture_file,dossier_id,description",
@@ -181,7 +199,8 @@ class TestFixtureOutputSchema:
 
     def test_selection_schema(self, fixture_file, dossier_id, description, tmp_path):
         selection, _ = _run_pipeline(fixture_file, tmp_path)
-        for key in ("selected_clause_ids", "selected_clauses", "risk_flags", "skipped_clause_ids", "validated_against"):
+        for key in ("selected_clause_ids", "selected_clauses", "risk_flags",
+                     "skipped_clause_ids", "validated_against", "jurist_review_clauses"):
             assert key in selection, f"Missing key '{key}' in selection output"
 
     def test_risk_flags_merged_in_assembled(self, fixture_file, dossier_id, description, tmp_path):
