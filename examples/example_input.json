@@ -12,8 +12,8 @@
         "gemeente": "Herentals"
       },
       "geboorteplaats": "Herentals",
-      "geboortedatum": "1965-03-12",
-      "rijksregisternummer": "65.03.12-123.45",
+      "geboortedatum": "1970-01-01",
+      "rijksregisternummer": "TEST_RRN_VOORBEELD",
       "burgerlijke_staat": "gehuwd"
     }
   ],
@@ -30,7 +30,7 @@
         "gemeente": "Herentals"
       },
       "geboorteplaats": "Lier",
-      "geboortedatum": "1988-07-22",
+      "geboortedatum": "1990-01-01",
       "rijksregisternummer": null,
       "burgerlijke_staat": "ongehuwd"
     }

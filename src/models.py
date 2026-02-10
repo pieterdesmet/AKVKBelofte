@@ -52,7 +52,10 @@ RIJKSREGISTER_PATTERN = re.compile(r"^\d{2}\.\d{2}\.\d{2}-\d{3}\.\d{2}$")
 
 
 def validate_rijksregisternummer(value: str) -> bool:
-    """Validate Belgian national registry number format (XX.XX.XX-XXX.XX)."""
+    """Validate Belgian national registry number format (XX.XX.XX-XXX.XX).
+    Also accepts TEST_RRN_* patterns for sanitized test data (GDPR compliance)."""
+    if value.startswith("TEST_RRN_"):
+        return True
     return bool(RIJKSREGISTER_PATTERN.match(value))
 
 

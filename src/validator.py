@@ -6,8 +6,12 @@ NOOIT raden - altijd flaggen.
 
 from __future__ import annotations
 
+import re
 from dataclasses import dataclass, field
 from typing import Any, Optional
+
+# Pattern matching real Belgian RRN format: XX.XX.XX-XXX.XX
+_RRN_PATTERN = re.compile(r"\d{2}\.\d{2}\.\d{2}-\d{3}\.\d{2}")
 
 from .models import (
     Adres,
@@ -160,6 +164,28 @@ def _validate_opties(opties: Optional[VerklaardeOpties], flags: list[ValidationF
         _flag(flags, f"{prefix}.financiering_vereist", "Financieringsvoorwaarde niet gekozen")
 
 
+def _scan_for_rrn_patterns(data: Any, path: str, flags: list[ValidationFlag]) -> None:
+    """
+    Recursively scan all string values in the input data for real RRN patterns.
+    Flags a high-severity warning if found. Does NOT block generation.
+    Advises masking with TEST_RRN_xxx values.
+    """
+    if isinstance(data, str):
+        if _RRN_PATTERN.search(data):
+            _flag(
+                flags, path,
+                f"GDPR-waarschuwing: waarde '{data}' lijkt een echt rijksregisternummer te bevatten. "
+                f"Gebruik testwaarden (bv. TEST_RRN_001) in niet-productiedata.",
+                severity="high",
+            )
+    elif isinstance(data, dict):
+        for key, value in data.items():
+            _scan_for_rrn_patterns(value, f"{path}.{key}" if path else key, flags)
+    elif isinstance(data, list):
+        for i, item in enumerate(data):
+            _scan_for_rrn_patterns(item, f"{path}[{i}]", flags)
+
+
 def validate_contract_input(input_data: ContractInput) -> ValidationResult:
     """
     Validate all required input for contract generation.
@@ -224,6 +250,9 @@ def validate_contract_input(input_data: ContractInput) -> ValidationResult:
     # Datum ondertekening
     if not input_data.datum_ondertekening:
         _flag(flags, "datum_ondertekening", "Datum van ondertekening ontbreekt")
+
+    # GDPR: scan for real RRN patterns in all string fields
+    _scan_for_rrn_patterns(input_data.__dict__, "", flags)
 
     required_missing = sum(1 for f in flags if f.severity == "required")
     recommended_missing = sum(1 for f in flags if f.severity == "recommended")
