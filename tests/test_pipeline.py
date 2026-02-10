@@ -57,6 +57,8 @@ class TestPipelineCLI:
         assert "unresolved_placeholders" in data
         assert "flags" in data
         assert "confidence_score" in data
+        assert "readiness_status" in data
+        assert "next_actions" in data
 
     def test_contract_txt_exists_and_not_empty(self, outdir):
         self._run_pipeline(outdir)

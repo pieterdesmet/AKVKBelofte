@@ -116,12 +116,46 @@ def assemble_strict(dossier: dict, selection: dict) -> dict:
             "clause_id": u["clause_id"],
         })
 
+    # Gate rules: readiness_status + next_actions
+    next_actions: list[str] = []
+    jurist_clause_ids = [
+        c["id"] for c in selection["selected_clauses"]
+        if c.get("requires_jurist") and c["id"] in used
+    ]
+    has_requires_jurist = len(jurist_clause_ids) > 0
+
+    if len(unresolved) > 0:
+        readiness_status = "DRAFT_BLOCKED"
+        next_actions.append(
+            "Vul ontbrekende velden aan: "
+            + ", ".join(u["placeholder"] for u in unresolved)
+        )
+    elif high_risk_count >= 1 or has_requires_jurist:
+        readiness_status = "DRAFT_REVIEW_REQUIRED"
+        if high_risk_count >= 1:
+            high_risk_ids = [
+                rf["clause_id"] for rf in selection.get("risk_flags", [])
+                if rf.get("risk_level") == "high"
+            ]
+            next_actions.append(
+                "Review vereist voor hoog-risico vlaggen: " + ", ".join(high_risk_ids)
+            )
+        if has_requires_jurist:
+            next_actions.append(
+                "Laat contract nakijken door jurist (clausules: "
+                + ", ".join(jurist_clause_ids) + ")"
+            )
+    else:
+        readiness_status = "DRAFT_OK"
+
     return {
         "document_text": "\n\n".join(text_parts),
         "used_clauses": used,
         "unresolved_placeholders": unresolved,
         "flags": flags,
         "confidence_score": confidence_score,
+        "readiness_status": readiness_status,
+        "next_actions": next_actions,
     }
 
 

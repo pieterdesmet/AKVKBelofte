@@ -147,6 +147,23 @@ class TestFixtureSnapshot:
         assert len(selection["derived_fields"]) == 3, "Expected 3 derived fields"
         assert len(selection["activation_evaluation"]) == 30, "Expected 30 clause evaluations (full library)"
 
+    def test_readiness_status(self, fixture_file, dossier_id, description, tmp_path):
+        """Guard: readiness_status must match snapshot exactly."""
+        expected = _load_expected(fixture_file)
+        _, assembled = _run_pipeline(fixture_file, tmp_path)
+        assert assembled["readiness_status"] == expected["readiness_status"], (
+            f"[{dossier_id}] readiness_status drift: "
+            f"got {assembled['readiness_status']}, expected {expected['readiness_status']}"
+        )
+
+    def test_next_actions(self, fixture_file, dossier_id, description, tmp_path):
+        """Guard: next_actions must match snapshot exactly."""
+        expected = _load_expected(fixture_file)
+        _, assembled = _run_pipeline(fixture_file, tmp_path)
+        assert assembled["next_actions"] == expected["next_actions"], (
+            f"[{dossier_id}] next_actions drift"
+        )
+
 
 @pytest.mark.parametrize(
     "fixture_file,dossier_id,description",
@@ -158,7 +175,8 @@ class TestFixtureOutputSchema:
 
     def test_assembled_schema(self, fixture_file, dossier_id, description, tmp_path):
         _, assembled = _run_pipeline(fixture_file, tmp_path)
-        for key in ("document_text", "used_clauses", "unresolved_placeholders", "flags", "confidence_score"):
+        for key in ("document_text", "used_clauses", "unresolved_placeholders", "flags",
+                     "confidence_score", "readiness_status", "next_actions"):
             assert key in assembled, f"Missing key '{key}' in assembled output"
 
     def test_selection_schema(self, fixture_file, dossier_id, description, tmp_path):

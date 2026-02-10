@@ -42,5 +42,9 @@
   "unresolved_placeholders": [
     "{{notaris.verkoper}}",
     "{{bodemattest.inhoud}}"
+  ],
+  "readiness_status": "DRAFT_BLOCKED",
+  "next_actions": [
+    "Vul ontbrekende velden aan: {{notaris.verkoper}}, {{bodemattest.inhoud}}"
   ]
 }

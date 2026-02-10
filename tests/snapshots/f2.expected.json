@@ -41,5 +41,10 @@
   ],
   "confidence_score": 95,
   "unresolved_count": 0,
-  "unresolved_placeholders": []
+  "unresolved_placeholders": [],
+  "readiness_status": "DRAFT_REVIEW_REQUIRED",
+  "next_actions": [
+    "Review vereist voor hoog-risico vlaggen: OPSCH_FIN_01",
+    "Laat contract nakijken door jurist (clausules: HOOFD_03, SANCT_01, SANCT_02)"
+  ]
 }

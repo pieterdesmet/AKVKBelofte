@@ -39,5 +39,9 @@
   "risk_flags_high_clause_ids": [],
   "confidence_score": 100,
   "unresolved_count": 0,
-  "unresolved_placeholders": []
+  "unresolved_placeholders": [],
+  "readiness_status": "DRAFT_REVIEW_REQUIRED",
+  "next_actions": [
+    "Laat contract nakijken door jurist (clausules: HOOFD_03, SANCT_01, SANCT_02)"
+  ]
 }
