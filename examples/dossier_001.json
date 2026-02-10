@@ -48,8 +48,16 @@
   },
   "pand": {
     "pandtype": "woning",
-    "adres": "Berkenlaan 14, 2220 Heist-op-den-Berg",
-    "kadaster": "1e afdeling, sectie C, nummer 312K, oppervlakte 620 m²",
+    "straat": "Berkenlaan",
+    "huisnummer": "14",
+    "postcode": "2220",
+    "gemeente": "Heist-op-den-Berg",
+    "kadaster": {
+      "afdeling": "1e",
+      "sectie": "C",
+      "perceelnummer": "312K",
+      "oppervlakte": "620"
+    },
     "ki": 1485,
     "bouwjaar": 1987
   },
@@ -58,6 +66,19 @@
     "waarborg": 34900,
     "akte_uiterlijk": "2026-06-09",
     "genot": "vrij"
+  },
+  "notaris": {
+    "verkoper": "Notariskantoor De Groote, Aarschot",
+    "koper": "Notariskantoor Lemmens, Herentals"
+  },
+  "bodemattest": {
+    "datum": "2026-01-08",
+    "referentie": "OVAM-2026-TEST-001",
+    "inhoud": "Geen verontreiniging vastgesteld"
+  },
+  "verklaarde_opties": {
+    "bodem_verklaring": "geen risicogrond is en niet is opgenomen in de inventaris van gronden",
+    "asbest_optie": "asbestinventarisattest beschikbaar, geen asbesthoudende materialen in slechte staat"
   },
   "attesten": {
     "bodem": "ok",

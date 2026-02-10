@@ -10,61 +10,33 @@ import re
 import sys
 from pathlib import Path
 
-
-def _parse_pand_adres(adres: str) -> dict:
-    result = {}
-    parts = adres.split(", ", 1)
-    if len(parts) == 2:
-        straat_num = parts[0].rsplit(" ", 1)
-        result["straat"] = straat_num[0] if len(straat_num) == 2 else parts[0]
-        result["huisnummer"] = straat_num[1] if len(straat_num) == 2 else None
-        post_gem = parts[1].split(" ", 1)
-        result["postcode"] = post_gem[0] if len(post_gem) == 2 else None
-        result["gemeente"] = post_gem[1] if len(post_gem) == 2 else parts[1]
-    return result
+# Regex matches {{dotted.path}} placeholders (e.g. {{pand.gemeente}}, {{titel_adres}})
+_PLACEHOLDER_RE = re.compile(r"\{\{([\w.]+)\}\}")
 
 
-def _parse_kadaster(kadaster: str) -> dict:
-    result = {}
-    m = re.search(r"(\S+)\s+afdeling", kadaster)
-    if m:
-        result["afdeling"] = m.group(1)
-    m = re.search(r"sectie\s+(\S+)", kadaster)
-    if m:
-        result["sectie"] = m.group(1).rstrip(",")
-    m = re.search(r"nummer\s+(\S+)", kadaster)
-    if m:
-        result["perceelnummer"] = m.group(1).rstrip(",")
-    m = re.search(r"oppervlakte\s+(\d+)", kadaster)
-    if m:
-        result["oppervlakte"] = m.group(1)
-    return result
+def _resolve_dot_path(data: dict, path: str) -> str | None:
+    """Resolve a dot-notation path against a nested dict. Returns string or None."""
+    keys = path.split(".")
+    current = data
+    for key in keys:
+        if isinstance(current, dict) and key in current:
+            current = current[key]
+        else:
+            return None
+    if current is None:
+        return None
+    return str(current)
 
 
-def _build_placeholder_map(dossier: dict) -> dict:
-    pm: dict[str, str | None] = {}
-    pand = dossier.get("pand", {})
-    pm["type_pand"] = pand.get("pandtype")
-    pm["kadastraal_inkomen"] = str(pand["ki"]) if pand.get("ki") is not None else None
-    if pand.get("adres"):
-        pm.update(_parse_pand_adres(pand["adres"]))
-    if pand.get("kadaster"):
-        pm.update(_parse_kadaster(pand["kadaster"]))
-    tx = dossier.get("transactie", {})
-    pm["verkoopprijs"] = str(tx["verkoopsprijs"]) if tx.get("verkoopsprijs") is not None else None
-    pm["voorschot"] = str(tx["waarborg"]) if tx.get("waarborg") is not None else None
-    return pm
-
-
-def _fill_placeholders(text, values, unresolved_list, clause_id):
+def _fill_placeholders(text, dossier, unresolved_list, clause_id):
     def replacer(match):
-        key = match.group(1)
-        val = values.get(key)
+        path = match.group(1)
+        val = _resolve_dot_path(dossier, path)
         if val is not None:
             return val
-        unresolved_list.append({"placeholder": f"{{{{{key}}}}}", "clause_id": clause_id, "reason": "missing"})
+        unresolved_list.append({"placeholder": f"{{{{{path}}}}}", "clause_id": clause_id, "reason": "missing"})
         return match.group(0)
-    return re.sub(r"\{\{(\w+)\}\}", replacer, text)
+    return _PLACEHOLDER_RE.sub(replacer, text)
 
 
 def _expand_party(content_nl, persons, clause_id, unresolved_list):
@@ -95,7 +67,6 @@ def _expand_party(content_nl, persons, clause_id, unresolved_list):
 
 
 def assemble_strict(dossier: dict, selection: dict) -> dict:
-    pm = _build_placeholder_map(dossier)
     unresolved: list[dict] = []
     used: list[str] = []
     text_parts: list[str] = []
@@ -114,7 +85,7 @@ def assemble_strict(dossier: dict, selection: dict) -> dict:
         if clause["subtype"] == "fixed":
             text_parts.append(cnl)
         else:
-            text_parts.append(_fill_placeholders(cnl, pm, unresolved, cid))
+            text_parts.append(_fill_placeholders(cnl, dossier, unresolved, cid))
 
     # Count high risk flags
     high_risk_count = sum(

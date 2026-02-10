@@ -1,6 +1,6 @@
 {
   "dossier_id": "dossier_001",
-  "clause_library": "clauses_v0.1.json",
+  "clause_library": "clauses_v0.2.json",
   "selection_timestamp": "2026-02-10T00:00:00Z",
   "selected_clause_ids": [
     "PARTIJEN_01",
@@ -59,7 +59,7 @@
       "module": "eigendom",
       "subtype": "parametric",
       "activation": [],
-      "content_nl": "{{type_pand}} gelegen te {{gemeente}}, {{straat}} {{huisnummer}}, kadastraal bekend {{afdeling}} afdeling, sectie {{sectie}}, nummer {{perceelnummer}}, met een oppervlakte van {{oppervlakte}} m², niet-geïndexeerd kadastraal inkomen: {{kadastraal_inkomen}} EUR.",
+      "content_nl": "{{pand.pandtype}} gelegen te {{pand.gemeente}}, {{pand.straat}} {{pand.huisnummer}}, kadastraal bekend {{pand.kadaster.afdeling}} afdeling, sectie {{pand.kadaster.sectie}}, nummer {{pand.kadaster.perceelnummer}}, met een oppervlakte van {{pand.kadaster.oppervlakte}} m², niet-geïndexeerd kadastraal inkomen: {{pand.ki}} EUR.",
       "risk_level": "medium",
       "requires_jurist": false,
       "activation_reason": "always-on"
@@ -139,7 +139,7 @@
       "module": "modaliteiten",
       "subtype": "parametric",
       "activation": [],
-      "content_nl": "Partijen hebben steeds recht een notaris aan te duiden. Optreden meerdere notarissen geeft geen aanleiding tot verhoging van de kosten. Notaris kandidaat-verkoper: {{notaris_verkoper}}. Notaris kandidaat-koper: {{notaris_koper}}.",
+      "content_nl": "Partijen hebben steeds recht een notaris aan te duiden. Optreden meerdere notarissen geeft geen aanleiding tot verhoging van de kosten. Notaris kandidaat-verkoper: {{notaris.verkoper}}. Notaris kandidaat-koper: {{notaris.koper}}.",
       "risk_level": "low",
       "requires_jurist": false,
       "activation_reason": "always-on"
@@ -149,7 +149,7 @@
       "module": "optieprijs",
       "subtype": "parametric",
       "activation": [],
-      "content_nl": "Kandidaat-koper is optieprijs verschuldigd ten bedrage van {{voorschot}} EUR als tegenprestatie voor verkoopbelofte (call-optie) naast de verleende aankoopbelofte (put-optie). Betaling via overschrijving op rekening Heylen Vastgoed BV KBC BE21 7330 3886 5203, binnen 5 werkdagen na ondertekening, met mededeling {{straat}} {{huisnummer}} - {{postcode}} {{gemeente}}. Ter consignatie tot verlijden notariële akte.",
+      "content_nl": "Kandidaat-koper is optieprijs verschuldigd ten bedrage van {{transactie.waarborg}} EUR als tegenprestatie voor verkoopbelofte (call-optie) naast de verleende aankoopbelofte (put-optie). Betaling via overschrijving op rekening Heylen Vastgoed BV KBC BE21 7330 3886 5203, binnen 5 werkdagen na ondertekening, met mededeling {{pand.straat}} {{pand.huisnummer}} - {{pand.postcode}} {{pand.gemeente}}. Ter consignatie tot verlijden notariële akte.",
       "risk_level": "high",
       "requires_jurist": false,
       "activation_reason": "always-on"
@@ -219,7 +219,7 @@
       "module": "prijs",
       "subtype": "parametric",
       "activation": [],
-      "content_nl": "De verkoopprijs bedraagt {{verkoopprijs}} EUR, contant te betalen bij verlijden notariële akte via rekening van instrumenterende notaris(sen). Het voorschot/optieprijs wordt aangerekend op de koopprijs bij verlijden akte. Geen interesten verschuldigd op koopprijs tussen ondertekening en betaling, tenzij put-optie gelicht wordt (dan 7% per jaar op saldo).",
+      "content_nl": "De verkoopprijs bedraagt {{transactie.verkoopsprijs}} EUR, contant te betalen bij verlijden notariële akte via rekening van instrumenterende notaris(sen). Het voorschot/optieprijs wordt aangerekend op de koopprijs bij verlijden akte. Geen interesten verschuldigd op koopprijs tussen ondertekening en betaling, tenzij put-optie gelicht wordt (dan 7% per jaar op saldo).",
       "risk_level": "high",
       "requires_jurist": false,
       "activation_reason": "always-on"
@@ -259,7 +259,7 @@
       "module": "verklaringen_verkoper",
       "subtype": "conditional",
       "activation": ["bouwvergunning_voor_2001 == true"],
-      "content_nl": "Asbestinventaris of attest afwezigheid asbest vereist voor woningen met bouwvergunning vóór 2001, vóór verlijden authentieke akte. Alternatief: {{asbest_optie}}.",
+      "content_nl": "Asbestinventaris of attest afwezigheid asbest vereist voor woningen met bouwvergunning vóór 2001, vóór verlijden authentieke akte. Alternatief: {{verklaarde_opties.asbest_optie}}.",
       "risk_level": "medium",
       "requires_jurist": false,
       "activation_reason": "pand.bouwjaar == 1987 < 2001 → bouwvergunning_voor_2001 == true"
@@ -269,7 +269,7 @@
       "module": "verklaringen_verkoper",
       "subtype": "conditional",
       "activation": [],
-      "content_nl": "De kandidaat-verkoper verklaart dat het goed {{bodem_verklaring}}. Bodemattest dd. {{datum_bodemattest}}, referentie {{referentie_bodemattest}}: {{inhoud_bodemattest}}. De kandidaat-verkoper verklaart dat het kadastraal inkomen niet onderworpen is aan een herziening en dat er geen procedures hieromtrent lopende zijn.",
+      "content_nl": "De kandidaat-verkoper verklaart dat het goed {{verklaarde_opties.bodem_verklaring}}. Bodemattest dd. {{bodemattest.datum}}, referentie {{bodemattest.referentie}}: {{bodemattest.inhoud}}. De kandidaat-verkoper verklaart dat het kadastraal inkomen niet onderworpen is aan een herziening en dat er geen procedures hieromtrent lopende zijn.",
       "risk_level": "high",
       "requires_jurist": false,
       "activation_reason": "always-on"
@@ -361,20 +361,6 @@
       "source_field": null,
       "source_value": null,
       "flag": "Clause requires_jurist=true. Conventionele schadevergoeding 10% verkoopprijs (34.900 EUR in dit dossier): standaard CIB-clausule, review bij ondertekening."
-    },
-    {
-      "clause_id": "VERKL_ASBEST_01",
-      "risk_level": "low",
-      "source_field": "pand.bouwjaar",
-      "source_value": 1987,
-      "flag": "Bouwjaar < 2001 activeert asbestclausule. Attest is verplicht_ok: geen blokkering, maar expliciete optiekeuze (option_1/option_2) ontbreekt voor placeholder {{asbest_optie}}."
-    },
-    {
-      "clause_id": "VERKL_BODEM_01",
-      "risk_level": "low",
-      "source_field": "attesten.bodem",
-      "source_value": "ok",
-      "flag": "Bodemattest status ok maar gedetailleerde attesten (datum, referentie, inhoud) ontbreken voor invulling placeholders {{datum_bodemattest}}, {{referentie_bodemattest}}, {{inhoud_bodemattest}}."
     }
   ],
   "skipped_clause_ids": [
@@ -389,7 +375,7 @@
     "skipped": 1,
     "risk_flags_high": 2,
     "risk_flags_medium": 3,
-    "risk_flags_low": 2,
+    "risk_flags_low": 0,
     "requires_jurist_count": 3
   }
 }

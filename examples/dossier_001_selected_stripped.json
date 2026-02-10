@@ -9,7 +9,7 @@
   },
   {
     "id": "PAND_01",
-    "content_nl": "{{type_pand}} gelegen te {{gemeente}}, {{straat}} {{huisnummer}}, kadastraal bekend {{afdeling}} afdeling, sectie {{sectie}}, nummer {{perceelnummer}}, met een oppervlakte van {{oppervlakte}} m², niet-geïndexeerd kadastraal inkomen: {{kadastraal_inkomen}} EUR."
+    "content_nl": "{{pand.pandtype}} gelegen te {{pand.gemeente}}, {{pand.straat}} {{pand.huisnummer}}, kadastraal bekend {{pand.kadaster.afdeling}} afdeling, sectie {{pand.kadaster.sectie}}, nummer {{pand.kadaster.perceelnummer}}, met een oppervlakte van {{pand.kadaster.oppervlakte}} m², niet-geïndexeerd kadastraal inkomen: {{pand.ki}} EUR."
   },
   {
     "id": "PAND_02",
@@ -41,11 +41,11 @@
   },
   {
     "id": "MODAL_03",
-    "content_nl": "Partijen hebben steeds recht een notaris aan te duiden. Optreden meerdere notarissen geeft geen aanleiding tot verhoging van de kosten. Notaris kandidaat-verkoper: {{notaris_verkoper}}. Notaris kandidaat-koper: {{notaris_koper}}."
+    "content_nl": "Partijen hebben steeds recht een notaris aan te duiden. Optreden meerdere notarissen geeft geen aanleiding tot verhoging van de kosten. Notaris kandidaat-verkoper: {{notaris.verkoper}}. Notaris kandidaat-koper: {{notaris.koper}}."
   },
   {
     "id": "OPTIES_01",
-    "content_nl": "Kandidaat-koper is optieprijs verschuldigd ten bedrage van {{voorschot}} EUR als tegenprestatie voor verkoopbelofte (call-optie) naast de verleende aankoopbelofte (put-optie). Betaling via overschrijving op rekening Heylen Vastgoed BV KBC BE21 7330 3886 5203, binnen 5 werkdagen na ondertekening, met mededeling {{straat}} {{huisnummer}} - {{postcode}} {{gemeente}}. Ter consignatie tot verlijden notariële akte."
+    "content_nl": "Kandidaat-koper is optieprijs verschuldigd ten bedrage van {{transactie.waarborg}} EUR als tegenprestatie voor verkoopbelofte (call-optie) naast de verleende aankoopbelofte (put-optie). Betaling via overschrijving op rekening Heylen Vastgoed BV KBC BE21 7330 3886 5203, binnen 5 werkdagen na ondertekening, met mededeling {{pand.straat}} {{pand.huisnummer}} - {{pand.postcode}} {{pand.gemeente}}. Ter consignatie tot verlijden notariële akte."
   },
   {
     "id": "OPTIES_02",
@@ -58,6 +58,10 @@
   {
     "id": "OPSCH_BODEM_01",
     "content_nl": "Opschortende voorwaarde in voordeel van de kandidaat-koper: bekomen bodemattest vóór verstrijken verkoopbelofte termijn. Bodemattest toont geen gegevens bij OVAM OF geen bodemverontreiniging die saneringsverplichting geeft. Zekerheid dat eigendom geen risicogrond is via navraag OVAM en gemeente."
+  },
+  {
+    "id": "OPSCH_BODEM_02",
+    "content_nl": "Opschortende voorwaarde in voordeel van de kandidaat-koper: bekomen bodemattest vóór verstrijken verkoopbelofte termijn. Bodemattest toont geen bodemverontreiniging die saneringsverplichting geeft. Kandidaat-verkoper geeft opdracht aan notaris om op zijn kosten oriënterend bodemonderzoek te laten uitvoeren indien nodig."
   },
   {
     "id": "OPSCH_RO_01",
@@ -73,7 +77,7 @@
   },
   {
     "id": "PRIJS_01",
-    "content_nl": "De verkoopprijs bedraagt {{verkoopprijs}} EUR, contant te betalen bij verlijden notariële akte via rekening van instrumenterende notaris(sen). Het voorschot/optieprijs wordt aangerekend op de koopprijs bij verlijden akte. Geen interesten verschuldigd op koopprijs tussen ondertekening en betaling, tenzij put-optie gelicht wordt (dan 7% per jaar op saldo)."
+    "content_nl": "De verkoopprijs bedraagt {{transactie.verkoopsprijs}} EUR, contant te betalen bij verlijden notariële akte via rekening van instrumenterende notaris(sen). Het voorschot/optieprijs wordt aangerekend op de koopprijs bij verlijden akte. Geen interesten verschuldigd op koopprijs tussen ondertekening en betaling, tenzij put-optie gelicht wordt (dan 7% per jaar op saldo)."
   },
   {
     "id": "VERKL_EIGEN_01",
@@ -89,11 +93,11 @@
   },
   {
     "id": "VERKL_ASBEST_01",
-    "content_nl": "Asbestinventaris of attest afwezigheid asbest vereist voor woningen met bouwvergunning vóór 2001, vóór verlijden authentieke akte. Alternatief: {{asbest_optie}}."
+    "content_nl": "Asbestinventaris of attest afwezigheid asbest vereist voor woningen met bouwvergunning vóór 2001, vóór verlijden authentieke akte. Alternatief: {{verklaarde_opties.asbest_optie}}."
   },
   {
     "id": "VERKL_BODEM_01",
-    "content_nl": "De kandidaat-verkoper verklaart dat het goed {{bodem_verklaring}}. Bodemattest dd. {{datum_bodemattest}}, referentie {{referentie_bodemattest}}: {{inhoud_bodemattest}}. De kandidaat-verkoper verklaart dat het kadastraal inkomen niet onderworpen is aan een herziening en dat er geen procedures hieromtrent lopende zijn."
+    "content_nl": "De kandidaat-verkoper verklaart dat het goed {{verklaarde_opties.bodem_verklaring}}. Bodemattest dd. {{bodemattest.datum}}, referentie {{bodemattest.referentie}}: {{bodemattest.inhoud}}. De kandidaat-verkoper verklaart dat het kadastraal inkomen niet onderworpen is aan een herziening en dat er geen procedures hieromtrent lopende zijn."
   },
   {
     "id": "SANCT_01",

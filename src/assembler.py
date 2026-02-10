@@ -17,96 +17,44 @@ import sys
 from datetime import datetime, timezone
 from pathlib import Path
 
-
-def _parse_pand_adres(adres: str) -> dict:
-    """Parse 'Berkenlaan 14, 2220 Heist-op-den-Berg' into components."""
-    result = {}
-    parts = adres.split(", ", 1)
-    if len(parts) == 2:
-        straat_num = parts[0].rsplit(" ", 1)
-        result["straat"] = straat_num[0] if len(straat_num) == 2 else parts[0]
-        result["huisnummer"] = straat_num[1] if len(straat_num) == 2 else None
-        post_gem = parts[1].split(" ", 1)
-        result["postcode"] = post_gem[0] if len(post_gem) == 2 else None
-        result["gemeente"] = post_gem[1] if len(post_gem) == 2 else parts[1]
-    return result
+# Regex matches {{dotted.path}} placeholders (e.g. {{pand.gemeente}}, {{titel_adres}})
+_PLACEHOLDER_RE = re.compile(r"\{\{([\w.]+)\}\}")
 
 
-def _parse_kadaster(kadaster: str) -> dict:
-    """Parse '1e afdeling, sectie C, nummer 312K, oppervlakte 620 m²'."""
-    result = {}
-    m = re.search(r"(\S+)\s+afdeling", kadaster)
-    if m:
-        result["afdeling"] = m.group(1)
-    m = re.search(r"sectie\s+(\S+)", kadaster)
-    if m:
-        result["sectie"] = m.group(1).rstrip(",")
-    m = re.search(r"nummer\s+(\S+)", kadaster)
-    if m:
-        result["perceelnummer"] = m.group(1).rstrip(",")
-    m = re.search(r"oppervlakte\s+(\d+)", kadaster)
-    if m:
-        result["oppervlakte"] = m.group(1)
-    return result
-
-
-def _build_placeholder_map(dossier: dict) -> dict:
-    """Build a flat placeholder → value map from dossier data."""
-    pm: dict[str, str | None] = {}
-
-    # Pand fields
-    pand = dossier.get("pand", {})
-    pm["type_pand"] = pand.get("pandtype")
-    pm["kadastraal_inkomen"] = str(pand["ki"]) if pand.get("ki") is not None else None
-
-    if pand.get("adres"):
-        parsed = _parse_pand_adres(pand["adres"])
-        pm["straat"] = parsed.get("straat")
-        pm["huisnummer"] = parsed.get("huisnummer")
-        pm["postcode"] = parsed.get("postcode")
-        pm["gemeente"] = parsed.get("gemeente")
-
-    if pand.get("kadaster"):
-        parsed = _parse_kadaster(pand["kadaster"])
-        pm.update(parsed)
-
-    # Transactie fields
-    tx = dossier.get("transactie", {})
-    pm["verkoopprijs"] = str(tx["verkoopsprijs"]) if tx.get("verkoopsprijs") is not None else None
-    pm["voorschot"] = str(tx["waarborg"]) if tx.get("waarborg") is not None else None
-
-    # Fields not in dossier — will remain unresolved
-    pm["notaris_verkoper"] = None
-    pm["notaris_koper"] = None
-    pm["asbest_optie"] = None
-    pm["bodem_verklaring"] = None
-    pm["datum_bodemattest"] = None
-    pm["referentie_bodemattest"] = None
-    pm["inhoud_bodemattest"] = None
-
-    return pm
+def _resolve_dot_path(data: dict, path: str) -> str | None:
+    """Resolve a dot-notation path against a nested dict. Returns string or None."""
+    keys = path.split(".")
+    current = data
+    for key in keys:
+        if isinstance(current, dict) and key in current:
+            current = current[key]
+        else:
+            return None
+    if current is None:
+        return None
+    return str(current)
 
 
 def _fill_placeholders(
     text: str,
-    values: dict[str, str | None],
+    dossier: dict,
     unresolved: list[dict],
     clause_id: str,
 ) -> str:
-    """Replace {{placeholder}} with values. Track unresolved ones."""
+    """Replace {{placeholder}} with values from dossier via dot-path. Track unresolved ones."""
     def replacer(match: re.Match) -> str:
-        key = match.group(1)
-        val = values.get(key)
+        path = match.group(1)
+        val = _resolve_dot_path(dossier, path)
         if val is not None:
             return val
         unresolved.append({
-            "placeholder": f"{{{{{key}}}}}",
+            "placeholder": f"{{{{{path}}}}}",
             "clause_id": clause_id,
-            "reason": f"Geen waarde gevonden in dossier voor '{key}'",
+            "reason": f"Geen waarde gevonden in dossier voor '{path}'",
         })
         return match.group(0)  # leave {{placeholder}} as-is
 
-    return re.sub(r"\{\{(\w+)\}\}", replacer, text)
+    return _PLACEHOLDER_RE.sub(replacer, text)
 
 
 def _expand_party_clause(
@@ -116,10 +64,6 @@ def _expand_party_clause(
     unresolved: list[dict],
 ) -> str:
     """Expand a party clause for each person, filling per-person placeholders."""
-    # Split content into per-person template and shared tail
-    # The per-person part ends at the first sentence that doesn't contain placeholders
-    # For PARTIJEN_01/02: the personal part is before "Verklaren..."
-    # Find the split point: first sentence starting with "Verklaren" or "Hoofdelijk"
     split_match = re.search(r"\.\s+(Verklaren\b)", content_nl)
     if split_match:
         per_person_template = content_nl[: split_match.start() + 1]
@@ -151,7 +95,6 @@ def _expand_party_clause(
 
 def assemble(dossier: dict, selection: dict) -> dict:
     """Assemble document from dossier data and selected clauses."""
-    placeholder_map = _build_placeholder_map(dossier)
     unresolved: list[dict] = []
     flags: list[dict] = []
     used_clauses: list[str] = []
@@ -183,11 +126,11 @@ def assemble(dossier: dict, selection: dict) -> dict:
             text_parts.append(assembled)
             continue
 
-        # All other clauses: fill placeholders from global map
+        # All other clauses: fill placeholders from dossier via dot-path
         if clause["subtype"] == "fixed":
             text_parts.append(content_nl)
         else:
-            filled = _fill_placeholders(content_nl, placeholder_map, unresolved, clause_id)
+            filled = _fill_placeholders(content_nl, dossier, unresolved, clause_id)
             text_parts.append(filled)
 
     # Propagate risk_flags from selection as assembly flags
@@ -206,20 +149,20 @@ def assemble(dossier: dict, selection: dict) -> dict:
             "detail": f"Placeholder {ur['placeholder']} niet ingevuld: {ur['reason']}",
         })
 
-    # Confidence score
+    # Confidence score: percentage of resolved placeholders
     total_placeholders = sum(
-        len(re.findall(r"\{\{\w+\}\}", c["content_nl"]))
+        len(_PLACEHOLDER_RE.findall(c["content_nl"]))
         for c in selection["selected_clauses"]
     )
     # Count party clause placeholders per person
     for c in selection["selected_clauses"]:
         if c["id"] == "PARTIJEN_01":
             n = len(dossier["partijen"]["verkopers"])
-            per_person = len(re.findall(r"\{\{\w+\}\}", c["content_nl"].split(". Verklaren")[0]))
+            per_person = len(_PLACEHOLDER_RE.findall(c["content_nl"].split(". Verklaren")[0]))
             total_placeholders += per_person * (n - 1)  # already counted once
         elif c["id"] == "PARTIJEN_02":
             n = len(dossier["partijen"]["kopers"])
-            per_person = len(re.findall(r"\{\{\w+\}\}", c["content_nl"].split(". Verklaren")[0]))
+            per_person = len(_PLACEHOLDER_RE.findall(c["content_nl"].split(". Verklaren")[0]))
             total_placeholders += per_person * (n - 1)
 
     resolved_count = total_placeholders - len(unresolved)
