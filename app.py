@@ -142,8 +142,8 @@ st.title("Heylen Vastgoed — Contract Generator")
 
 # --- Session state init ---
 
-if "dossier_json" not in st.session_state:
-    st.session_state.dossier_json = ""
+if "dossier_json_text" not in st.session_state:
+    st.session_state["dossier_json_text"] = ""
 if "results" not in st.session_state:
     st.session_state.results = None
 
@@ -159,16 +159,15 @@ with left:
     if st.button("Load", use_container_width=True):
         path = REPO_ROOT / DOSSIER_OPTIONS[selected_label]
         with open(path, "r", encoding="utf-8") as f:
-            st.session_state.dossier_json = f.read()
+            st.session_state["dossier_json_text"] = f.read()
         st.session_state.results = None
+        st.rerun()
 
     dossier_text = st.text_area(
         "Dossier JSON (editable)",
-        value=st.session_state.dossier_json,
         height=400,
-        key="editor",
+        key="dossier_json_text",
     )
-    st.session_state.dossier_json = dossier_text
 
     col_gen, col_pack = st.columns(2)
     with col_gen:
