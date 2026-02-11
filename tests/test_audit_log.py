@@ -289,6 +289,8 @@ class TestEngineAuditIntegration:
         assert len(lines) >= 1
         event = json.loads(lines[-1])
         assert event["dossier_id"] == "fixture_f1"
+        assert event["engine_version"] == ENGINE_VERSION
+        assert event["clause_catalog_version"] == CATALOG_VERSION
 
     def test_generation_succeeds_when_logging_fails(self, monkeypatch):
         """Generation must never fail because of an audit log error."""
