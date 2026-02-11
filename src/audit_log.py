@@ -27,6 +27,11 @@ def _sha256_hash(data: Any) -> str:
     return hashlib.sha256(serialised.encode("utf-8")).hexdigest()
 
 
+def _sha256_text(text: str) -> str:
+    """Return SHA-256 hex digest of a raw text string."""
+    return hashlib.sha256(text.encode("utf-8")).hexdigest()
+
+
 def log_cib_generation(event: dict) -> None:
     """Append *event* as a single JSON line to the audit log.
 
@@ -73,7 +78,7 @@ def build_audit_event(
         "confidence": result["confidence_score"],
         "gate_state": gate_state,
         "omnicasa_data_hash": _sha256_hash(dossier),
-        "document_hash": _sha256_hash(result.get("document_text", "")),
+        "document_hash": _sha256_text(result.get("document_text", "")),
         "clause_catalog_version": clause_catalog_version,
         "engine_version": engine_version,
         "app_version": app_version,

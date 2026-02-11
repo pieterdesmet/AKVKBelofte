@@ -23,6 +23,7 @@ from src.audit_log import (
     build_audit_event,
     log_cib_generation,
     _sha256_hash,
+    _sha256_text,
 )
 from src.cib_catalog import VERSION as CATALOG_VERSION
 from src.cib_engine import ENGINE_VERSION, generate_cib_document
@@ -230,6 +231,16 @@ class TestBuildAuditEvent:
         e1 = build_audit_event(result, gate, dossier, CATALOG_VERSION)
         e2 = build_audit_event(result, gate, dossier, CATALOG_VERSION)
         assert e1["document_hash"] == e2["document_hash"]
+
+    def test_document_hash_equals_sha256_of_document_text(self):
+        """Hash must be sha256 of the raw document_text, not JSON-serialised."""
+        import hashlib
+        result, gate, dossier = self._make_result_and_inputs()
+        event = build_audit_event(result, gate, dossier, CATALOG_VERSION)
+        expected = hashlib.sha256(
+            result["document_text"].encode("utf-8")
+        ).hexdigest()
+        assert event["document_hash"] == expected
 
     def test_document_hash_differs_for_different_document(self):
         d1 = _load_fixture("f1_happy_path_confirmed_financing.json")
