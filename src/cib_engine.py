@@ -304,13 +304,20 @@ def generate_cib_document(
     # 5. Risk flags
     flags: list[dict] = []
 
-    # CIB_TEXT_REQUIRED flags
-    for cid in cib_text_required:
+    # CIB_TEXT_REQUIRED flags (hard-blocking)
+    cib_text_required_details: list[dict] = []
+    for clause in selected:
+        if clause["text_block"] == "CIB_TEXT_REQUIRED":
+            cib_text_required_details.append({
+                "id": clause["id"],
+                "title": clause["title"],
+            })
+    for item in cib_text_required_details:
         flags.append({
             "type": "cib_text_required",
-            "clause_id": cid,
-            "risk_level": "medium",
-            "detail": f"Exacte CIB-tekst nog niet beschikbaar voor {cid}",
+            "clause_id": item["id"],
+            "risk_level": "high",
+            "detail": f"Exacte CIB-tekst ontbreekt voor {item['id']} ({item['title']}) — generatie geblokkeerd",
         })
 
     # Unresolved placeholder flags
@@ -383,6 +390,14 @@ def generate_cib_document(
             next_actions.append("Omnicasa data ambigu — Legal moet volgende items bevestigen:")
             for item in gate_result["ask_items"]:
                 next_actions.append(f"  → {item['label']}")
+    elif cib_text_required:
+        readiness_status = "DRAFT_BLOCKED"
+        next_actions.append(
+            "CIB-tekst ontbreekt — generatie geblokkeerd. "
+            "Vul de exacte CIB-tekst aan voor:"
+        )
+        for item in cib_text_required_details:
+            next_actions.append(f"  → {item['id']}: {item['title']}")
     elif len(unresolved) > 0:
         readiness_status = "DRAFT_BLOCKED"
         next_actions.append(

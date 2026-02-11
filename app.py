@@ -338,6 +338,15 @@ with right:
                 for action in cib["next_actions"]:
                     st.markdown(f"- {action}")
 
+            # Hard-block detail: CIB_TEXT_REQUIRED
+            if status == "DRAFT_BLOCKED" and cib["cib_text_required"]:
+                st.error("Generatie geblokkeerd: exacte CIB-tekst ontbreekt")
+                for c in cib["selected_clauses"]:
+                    if c["id"] in cib["cib_text_required"]:
+                        st.markdown(f"- **{c['id']}**: {c['title']}")
+
+            is_blocked = status in ("GATE_BLOCKED", "DRAFT_BLOCKED")
+
             # Tabs
             tab_cib, tab_gate, tab_flags, tab_clauses, tab_triggers = st.tabs(
                 ["CIB Contract", "Legal Gate", "Flags", "Clauses", "Triggers"]
@@ -351,6 +360,7 @@ with right:
                     data=doc_text,
                     file_name=f"{cib['dossier_id']}_cib_contract.txt",
                     mime="text/plain",
+                    disabled=is_blocked,
                 )
 
             with tab_gate:
@@ -428,6 +438,8 @@ with right:
             # Downloads
             st.markdown("---")
             st.markdown("### Downloads")
+            if is_blocked:
+                st.warning("Downloads uitgeschakeld — status is geblokkeerd.")
             dl1, dl2 = st.columns(2)
             with dl1:
                 st.download_button(
@@ -435,6 +447,7 @@ with right:
                     data=json.dumps(cib, ensure_ascii=False, indent=2),
                     file_name=f"{cib['dossier_id']}_cib_result.json",
                     mime="application/json",
+                    disabled=is_blocked,
                 )
             with dl2:
                 st.download_button(
@@ -442,6 +455,7 @@ with right:
                     data=cib["document_text"],
                     file_name=f"{cib['dossier_id']}_cib_contract.txt",
                     mime="text/plain",
+                    disabled=is_blocked,
                 )
 
     else:

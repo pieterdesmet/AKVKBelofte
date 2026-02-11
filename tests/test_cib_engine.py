@@ -450,13 +450,15 @@ class TestDocumentAssembly:
         assert "Herentals" in text
 
     def test_cib_text_required_marker(self):
-        """Clauses with CIB_TEXT_REQUIRED show marker in output."""
+        """Clauses with CIB_TEXT_REQUIRED show marker in output and hard-block."""
         dossier = _load_fixture("f4_bodem_risico.json")
         gate = _make_cleared_gate(dossier)
         gate["bodem_variant"] = "sanering_vereist"
         result = generate_cib_document(dossier, gate)
         assert "CIB_D_BODEM_SANERING" in result["cib_text_required"]
         assert "[CIB_TEXT_REQUIRED:" in result["document_text"]
+        # Hard-block: status must be DRAFT_BLOCKED
+        assert result["readiness_status"] == "DRAFT_BLOCKED"
 
     def test_no_unresolved_on_complete_dossier(self):
         dossier = _load_fixture("f1_happy_path_confirmed_financing.json")
@@ -500,13 +502,16 @@ class TestReadinessStatus:
 # ===========================================================================
 
 class TestFlags:
-    def test_cib_text_required_flag(self):
+    def test_cib_text_required_flag_is_high_risk(self):
         dossier = _load_fixture("f4_bodem_risico.json")
         gate = _make_cleared_gate(dossier)
         gate["bodem_variant"] = "sanering_vereist"
         result = generate_cib_document(dossier, gate)
         cib_flags = [f for f in result["flags"] if f["type"] == "cib_text_required"]
         assert len(cib_flags) > 0
+        # Must be high risk (hard-blocking)
+        for f in cib_flags:
+            assert f["risk_level"] == "high"
 
     def test_jurist_required_flag(self):
         dossier = _load_fixture("f1_happy_path_confirmed_financing.json")
@@ -523,6 +528,106 @@ class TestFlags:
         gate_flags = [f for f in result["flags"] if f["type"] == "gate_not_met"]
         # Some clauses should have unmet gates
         assert len(gate_flags) > 0
+
+
+# ===========================================================================
+# CIB_TEXT_REQUIRED hard-block tests
+# ===========================================================================
+
+class TestCIBTextRequiredHardBlock:
+    """Verify that CIB_TEXT_REQUIRED in selected clauses hard-blocks generation."""
+
+    def _trigger_sanering(self):
+        """Return (dossier, gate) that triggers CIB_D_BODEM_SANERING (CIB_TEXT_REQUIRED)."""
+        dossier = _load_fixture("f4_bodem_risico.json")
+        gate = _make_cleared_gate(dossier)
+        gate["bodem_variant"] = "sanering_vereist"
+        return dossier, gate
+
+    def test_status_is_draft_blocked(self):
+        dossier, gate = self._trigger_sanering()
+        result = generate_cib_document(dossier, gate)
+        assert result["readiness_status"] == "DRAFT_BLOCKED"
+
+    def test_cib_text_required_list_populated(self):
+        dossier, gate = self._trigger_sanering()
+        result = generate_cib_document(dossier, gate)
+        assert len(result["cib_text_required"]) > 0
+        assert "CIB_D_BODEM_SANERING" in result["cib_text_required"]
+
+    def test_next_actions_mention_missing_clauses(self):
+        dossier, gate = self._trigger_sanering()
+        result = generate_cib_document(dossier, gate)
+        actions_text = "\n".join(result["next_actions"])
+        assert "CIB_D_BODEM_SANERING" in actions_text
+        assert "CIB-tekst ontbreekt" in actions_text
+
+    def test_flags_are_high_risk(self):
+        dossier, gate = self._trigger_sanering()
+        result = generate_cib_document(dossier, gate)
+        cib_flags = [f for f in result["flags"] if f["type"] == "cib_text_required"]
+        assert all(f["risk_level"] == "high" for f in cib_flags)
+
+    def test_flag_detail_contains_clause_title(self):
+        dossier, gate = self._trigger_sanering()
+        result = generate_cib_document(dossier, gate)
+        cib_flags = [f for f in result["flags"] if f["type"] == "cib_text_required"]
+        # Detail should mention both the ID and the title
+        for f in cib_flags:
+            assert f["clause_id"] in f["detail"]
+
+    def test_document_text_contains_marker(self):
+        dossier, gate = self._trigger_sanering()
+        result = generate_cib_document(dossier, gate)
+        assert "[CIB_TEXT_REQUIRED:" in result["document_text"]
+
+    def test_happy_path_no_cib_text_required(self):
+        """Happy path (F1 + cleared gate) should NOT have CIB_TEXT_REQUIRED."""
+        dossier = _load_fixture("f1_happy_path_confirmed_financing.json")
+        gate = _make_cleared_gate(dossier)
+        result = generate_cib_document(dossier, gate)
+        assert len(result["cib_text_required"]) == 0
+        assert result["readiness_status"] != "DRAFT_BLOCKED"
+
+    def test_gate_blocked_takes_precedence_over_cib_text_required(self):
+        """GATE_BLOCKED should take precedence over CIB_TEXT_REQUIRED DRAFT_BLOCKED."""
+        dossier = _load_fixture("f4_bodem_risico.json")
+        gate = empty_gate_state()
+        gate["bodem_variant"] = "sanering_vereist"
+        result = generate_cib_document(dossier, gate)
+        # Gate is not cleared → GATE_BLOCKED wins
+        assert result["readiness_status"] == "GATE_BLOCKED"
+
+    def test_multiple_cib_text_required_all_listed(self):
+        """When multiple CIB_TEXT_REQUIRED clauses trigger, all are listed."""
+        dossier = _load_fixture("f1_happy_path_confirmed_financing.json")
+        gate = _make_cleared_gate(dossier)
+        # Force triggers for multiple CIB_TEXT_REQUIRED clauses
+        gate["mede_eigendom"] = "ja"
+        gate["elektriciteit_variant"] = "geen_keuring"
+        result = generate_cib_document(dossier, gate)
+        # CIB_F_MEDE_EIGENDOM and CIB_F_ELEKTRICITEIT_GEEN_KEURING are both CIB_TEXT_REQUIRED
+        if len(result["cib_text_required"]) >= 2:
+            assert result["readiness_status"] == "DRAFT_BLOCKED"
+            # All should appear in next_actions
+            actions_text = "\n".join(result["next_actions"])
+            for cid in result["cib_text_required"]:
+                assert cid in actions_text
+
+    def test_confidence_drops_with_cib_text_required(self):
+        """Confidence should drop due to high-risk CIB_TEXT_REQUIRED flags."""
+        dossier = _load_fixture("f1_happy_path_confirmed_financing.json")
+        gate = _make_cleared_gate(dossier)
+        result_clean = generate_cib_document(dossier, gate)
+
+        gate["bodem_variant"] = "sanering_vereist"
+        # Need to re-use f4 for proper triggers
+        dossier_risico = _load_fixture("f4_bodem_risico.json")
+        gate_risico = _make_cleared_gate(dossier_risico)
+        gate_risico["bodem_variant"] = "sanering_vereist"
+        result_blocked = generate_cib_document(dossier_risico, gate_risico)
+
+        assert result_blocked["confidence_score"] < result_clean["confidence_score"]
 
 
 # ===========================================================================
