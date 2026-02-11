@@ -48,6 +48,8 @@ def build_audit_event(
     gate_state: dict[str, Any],
     dossier: dict,
     clause_catalog_version: str,
+    engine_version: str = "unknown",
+    app_version: str = "unknown",
 ) -> dict:
     """Build a structured audit event from generation result + inputs."""
     return {
@@ -71,5 +73,8 @@ def build_audit_event(
         "confidence": result["confidence_score"],
         "gate_state": gate_state,
         "omnicasa_data_hash": _sha256_hash(dossier),
+        "document_hash": _sha256_hash(result.get("document_text", "")),
         "clause_catalog_version": clause_catalog_version,
+        "engine_version": engine_version,
+        "app_version": app_version,
     }

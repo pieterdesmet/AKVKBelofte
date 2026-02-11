@@ -16,6 +16,8 @@ import re
 from datetime import datetime, timezone
 from typing import Any
 
+ENGINE_VERSION = "0.1.0"
+
 from src.cib_catalog import CIB_CLAUSES, CIB_SECTIONS, SECTION_ORDER, VERSION as CATALOG_VERSION
 from src.legal_gate import evaluate_gate, prefill_from_dossier, GATE_ITEMS_BY_ID
 from src.audit_log import build_audit_event, log_cib_generation
@@ -457,7 +459,10 @@ def generate_cib_document(
 
     # Audit log — never blocks generation
     try:
-        audit_event = build_audit_event(result, gate_state, dossier, CATALOG_VERSION)
+        audit_event = build_audit_event(
+            result, gate_state, dossier, CATALOG_VERSION,
+            engine_version=ENGINE_VERSION,
+        )
         log_cib_generation(audit_event)
     except Exception:  # noqa: BLE001
         import sys

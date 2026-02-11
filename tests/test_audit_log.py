@@ -25,7 +25,7 @@ from src.audit_log import (
     _sha256_hash,
 )
 from src.cib_catalog import VERSION as CATALOG_VERSION
-from src.cib_engine import generate_cib_document
+from src.cib_engine import ENGINE_VERSION, generate_cib_document
 from src.legal_gate import prefill_from_dossier
 
 FIXTURES_DIR = Path(__file__).parent.parent / "examples" / "fixtures"
@@ -140,12 +140,14 @@ class TestBuildAuditEvent:
 
     def test_required_fields_present(self):
         result, gate, dossier = self._make_result_and_inputs()
-        event = build_audit_event(result, gate, dossier, CATALOG_VERSION)
+        event = build_audit_event(result, gate, dossier, CATALOG_VERSION,
+                                  engine_version=ENGINE_VERSION)
         required = {
             "timestamp", "dossier_id", "legal_user",
             "readiness_status", "selected_clause_ids", "flags",
             "confidence", "gate_state", "omnicasa_data_hash",
-            "clause_catalog_version",
+            "document_hash", "clause_catalog_version",
+            "engine_version", "app_version",
         }
         assert required.issubset(set(event.keys()))
 
@@ -213,6 +215,52 @@ class TestBuildAuditEvent:
         event = build_audit_event(result, gate, dossier, CATALOG_VERSION)
         # gate_state legal_user takes precedence
         assert event["legal_user"] == "jurist_jan"
+
+    # ── document_hash tests ────────────────────────────────────────────
+
+    def test_document_hash_exists_and_is_sha256(self):
+        result, gate, dossier = self._make_result_and_inputs()
+        event = build_audit_event(result, gate, dossier, CATALOG_VERSION)
+        h = event["document_hash"]
+        assert len(h) == 64
+        assert all(c in "0123456789abcdef" for c in h)
+
+    def test_document_hash_deterministic(self):
+        result, gate, dossier = self._make_result_and_inputs()
+        e1 = build_audit_event(result, gate, dossier, CATALOG_VERSION)
+        e2 = build_audit_event(result, gate, dossier, CATALOG_VERSION)
+        assert e1["document_hash"] == e2["document_hash"]
+
+    def test_document_hash_differs_for_different_document(self):
+        d1 = _load_fixture("f1_happy_path_confirmed_financing.json")
+        d2 = _load_fixture("f2_financing_lopend.json")
+        g1 = _make_cleared_gate(d1)
+        g2 = _make_cleared_gate(d2)
+        r1 = generate_cib_document(d1, g1)
+        r2 = generate_cib_document(d2, g2)
+        e1 = build_audit_event(r1, g1, d1, CATALOG_VERSION)
+        e2 = build_audit_event(r2, g2, d2, CATALOG_VERSION)
+        assert e1["document_hash"] != e2["document_hash"]
+
+    # ── version fields tests ───────────────────────────────────────────
+
+    def test_engine_version_included(self):
+        result, gate, dossier = self._make_result_and_inputs()
+        event = build_audit_event(result, gate, dossier, CATALOG_VERSION,
+                                  engine_version=ENGINE_VERSION)
+        assert event["engine_version"] == ENGINE_VERSION
+
+    def test_app_version_included(self):
+        result, gate, dossier = self._make_result_and_inputs()
+        event = build_audit_event(result, gate, dossier, CATALOG_VERSION,
+                                  app_version="0.1.0")
+        assert event["app_version"] == "0.1.0"
+
+    def test_version_defaults_to_unknown(self):
+        result, gate, dossier = self._make_result_and_inputs()
+        event = build_audit_event(result, gate, dossier, CATALOG_VERSION)
+        assert event["engine_version"] == "unknown"
+        assert event["app_version"] == "unknown"
 
 
 # ===========================================================================

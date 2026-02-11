@@ -11,6 +11,8 @@ import re
 import zipfile
 from pathlib import Path
 
+APP_VERSION = "0.1.0"
+
 import streamlit as st
 
 from src.selector import select_clauses
