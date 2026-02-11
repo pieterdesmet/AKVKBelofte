@@ -16,8 +16,9 @@ import re
 from datetime import datetime, timezone
 from typing import Any
 
-from src.cib_catalog import CIB_CLAUSES, CIB_SECTIONS, SECTION_ORDER
+from src.cib_catalog import CIB_CLAUSES, CIB_SECTIONS, SECTION_ORDER, VERSION as CATALOG_VERSION
 from src.legal_gate import evaluate_gate, prefill_from_dossier, GATE_ITEMS_BY_ID
+from src.audit_log import build_audit_event, log_cib_generation
 
 # ---------------------------------------------------------------------------
 # Placeholder handling (reuses pattern from assembler_strict)
@@ -422,7 +423,7 @@ def generate_cib_document(
         readiness_status = "DRAFT_OK"
         next_actions.append("Klaar voor interne review en voorbereiding handtekening.")
 
-    return {
+    result = {
         "dossier_id": dossier.get("dossier_id", "unknown"),
         "generation_timestamp": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
         "gate_result": gate_result,
@@ -453,3 +454,13 @@ def generate_cib_document(
             "gate_cleared": gate_result["cleared"],
         },
     }
+
+    # Audit log — never blocks generation
+    try:
+        audit_event = build_audit_event(result, gate_state, dossier, CATALOG_VERSION)
+        log_cib_generation(audit_event)
+    except Exception:  # noqa: BLE001
+        import sys
+        print("[AUDIT WARNING] Audit logging failed", file=sys.stderr)
+
+    return result

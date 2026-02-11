@@ -10,6 +10,11 @@ NEVER paraphrase or rewrite legal text.  Only select and assemble existing block
 from __future__ import annotations
 
 # ---------------------------------------------------------------------------
+# Catalog version — bump when clauses are added, removed, or modified.
+# ---------------------------------------------------------------------------
+VERSION = "0.1.0"
+
+# ---------------------------------------------------------------------------
 # CIB document section ordering
 # ---------------------------------------------------------------------------
 CIB_SECTIONS = [
