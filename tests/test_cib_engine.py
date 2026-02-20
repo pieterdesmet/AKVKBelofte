@@ -22,7 +22,7 @@ from src.cib_engine import (
     _clause_triggers_match,
     _fill_placeholders,
 )
-from src.cib_catalog import CIB_CLAUSES, CIB_SECTIONS, get_clause_by_id, get_clauses_for_section
+from src.cib_catalog import CIB_CLAUSES, CIB_SECTIONS, CIB_TEXT_NOT_FOUND, get_clause_by_id, get_clauses_for_section
 from src.legal_gate import (
     GATE_ITEMS,
     GATE_ITEMS_BY_ID,
@@ -703,3 +703,57 @@ class TestCrossFixtures:
         result = generate_cib_document(dossier, gate)
         total = len(CIB_CLAUSES)
         assert result["summary"]["selected_count"] + result["summary"]["skipped_count"] == total
+
+
+# ===========================================================================
+# CIB text completion tests
+# ===========================================================================
+
+class TestCIBTextCompletion:
+    """Verify CIB_TEXT_REQUIRED clauses are either filled or documented as not found."""
+
+    def test_all_cib_text_required_documented_in_not_found(self):
+        """Every clause still marked CIB_TEXT_REQUIRED must be in CIB_TEXT_NOT_FOUND."""
+        marker_ids = {c["id"] for c in CIB_CLAUSES if c["text_block"] == "CIB_TEXT_REQUIRED"}
+        undocumented = marker_ids - CIB_TEXT_NOT_FOUND
+        assert not undocumented, f"CIB_TEXT_REQUIRED clauses not documented: {undocumented}"
+
+    def test_cib_text_not_found_matches_actual_markers(self):
+        """CIB_TEXT_NOT_FOUND must exactly equal the set of CIB_TEXT_REQUIRED clause IDs."""
+        marker_ids = {c["id"] for c in CIB_CLAUSES if c["text_block"] == "CIB_TEXT_REQUIRED"}
+        assert CIB_TEXT_NOT_FOUND == marker_ids
+
+    def test_no_filled_clause_in_not_found_set(self):
+        """A clause with real text must not appear in CIB_TEXT_NOT_FOUND."""
+        for c in CIB_CLAUSES:
+            if c["text_block"] != "CIB_TEXT_REQUIRED":
+                assert c["id"] not in CIB_TEXT_NOT_FOUND, (
+                    f"{c['id']} has text but is still in CIB_TEXT_NOT_FOUND"
+                )
+
+    def test_count_not_found_clauses(self):
+        """Verify the exact count of documented unresolved clauses."""
+        assert len(CIB_TEXT_NOT_FOUND) == 5
+
+    def test_epc_renovation_still_blocks_text_not_found(self):
+        """CIB_F_EPC_RENOVATIE text was NOT found in CIB source v0.1.
+
+        A dossier triggering epc_renovation_required still gets DRAFT_BLOCKED.
+        When official CIB text is supplied, replace this test with one
+        asserting the block is gone.
+        """
+        dossier = _load_fixture("f1_happy_path_confirmed_financing.json")
+        gate = _make_cleared_gate(dossier)
+        gate["epc_label"] = "E"  # triggers epc_renovation_required = True
+        result = generate_cib_document(dossier, gate)
+        assert "CIB_F_EPC_RENOVATIE" in result["cib_text_required"]
+        assert result["readiness_status"] == "DRAFT_BLOCKED"
+
+    def test_epc_renovation_next_actions_mention_clause(self):
+        """Next actions should list the missing EPC renovation clause."""
+        dossier = _load_fixture("f1_happy_path_confirmed_financing.json")
+        gate = _make_cleared_gate(dossier)
+        gate["epc_label"] = "F"
+        result = generate_cib_document(dossier, gate)
+        actions_text = "\n".join(result["next_actions"])
+        assert "CIB_F_EPC_RENOVATIE" in actions_text

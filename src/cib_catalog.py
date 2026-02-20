@@ -15,6 +15,19 @@ from __future__ import annotations
 VERSION = "0.1.0"
 
 # ---------------------------------------------------------------------------
+# Clauses where the exact CIB template text could NOT be found in the
+# provided CIB source (tweezijdige_aankoopbelofte_v0.1.json).
+# These keep the CIB_TEXT_REQUIRED marker until the official text is supplied.
+# ---------------------------------------------------------------------------
+CIB_TEXT_NOT_FOUND: set[str] = {
+    "CIB_D_BODEM_SANERING",           # soil_decree has option_1/option_2 only; no 'sanering_vereist'
+    "CIB_D_VOORKOOPRECHT",            # only declaration + procedure snippets; no suspensive condition
+    "CIB_F_ELEKTRICITEIT_GEEN_KEURING",  # conformity_building already used for 'niet_conform'; no 'geen_keuring'
+    "CIB_F_EPC_RENOVATIE",            # epc section has basic requirements only; no renovation obligation
+    "CIB_F_MEDE_EIGENDOM",            # completely absent from CIB source; searched: basisakte, syndicus
+}
+
+# ---------------------------------------------------------------------------
 # CIB document section ordering
 # ---------------------------------------------------------------------------
 CIB_SECTIONS = [
@@ -337,7 +350,7 @@ CIB_CLAUSES: list[dict] = [
         "id": "CIB_D_BODEM_SANERING",
         "section": "D",
         "title": "Bodem – saneringsverplichting",
-        "text_block": "CIB_TEXT_REQUIRED",
+        "text_block": "CIB_TEXT_REQUIRED",  # NOT FOUND: soil_decree has option_1/option_2 only; no 'sanering_vereist' variant
         "subtype": "fixed",
         "triggers": {"bodem_variant": "sanering_vereist"},
         "blocking_level": "required",
@@ -398,7 +411,7 @@ CIB_CLAUSES: list[dict] = [
         "id": "CIB_D_VOORKOOPRECHT",
         "section": "D",
         "title": "Voorkooprecht",
-        "text_block": "CIB_TEXT_REQUIRED",
+        "text_block": "CIB_TEXT_REQUIRED",  # NOT FOUND: only declaration snippet + procedure note; no full suspensive condition
         "subtype": "fixed",
         "triggers": {"voorkooprecht": "ja"},
         "blocking_level": "required",
@@ -476,7 +489,7 @@ CIB_CLAUSES: list[dict] = [
         "id": "CIB_F_ELEKTRICITEIT_GEEN_KEURING",
         "section": "F",
         "title": "Elektriciteit – nog geen keuring",
-        "text_block": "CIB_TEXT_REQUIRED",
+        "text_block": "CIB_TEXT_REQUIRED",  # NOT FOUND: conformity_building already used for 'niet_conform'; no distinct 'geen_keuring' wording
         "subtype": "fixed",
         "triggers": {"elektriciteit_variant": "geen_keuring"},
         "blocking_level": "ask",
@@ -502,7 +515,7 @@ CIB_CLAUSES: list[dict] = [
         "id": "CIB_F_EPC_RENOVATIE",
         "section": "F",
         "title": "EPC – renovatieverplichting",
-        "text_block": "CIB_TEXT_REQUIRED",
+        "text_block": "CIB_TEXT_REQUIRED",  # NOT FOUND: epc section has basic requirements only; no renovation obligation text
         "subtype": "fixed",
         "triggers": {"epc_renovation_required": True},
         "blocking_level": "none",
@@ -544,7 +557,7 @@ CIB_CLAUSES: list[dict] = [
         "id": "CIB_F_MEDE_EIGENDOM",
         "section": "F",
         "title": "Mede-eigendom – basisakte en syndicus",
-        "text_block": "CIB_TEXT_REQUIRED",
+        "text_block": "CIB_TEXT_REQUIRED",  # NOT FOUND: CIB source has no co-ownership section; searched: basisakte, syndicus, mede-eigendom
         "subtype": "parametric",
         "triggers": {"mede_eigendom": "ja"},
         "blocking_level": "required",
